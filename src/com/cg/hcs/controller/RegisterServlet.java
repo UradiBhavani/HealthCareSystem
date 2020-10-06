@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cg.hcs.dao.IUserDAO;
+import com.cg.hcs.dao.UserDAOImpl;
 import com.cg.hcs.entity.Users;
-import com.cg.hcs.source.IUserDAO;
-import com.cg.hcs.source.UserDAOImpl;
 
 
 @WebServlet("/RegisterServlet")

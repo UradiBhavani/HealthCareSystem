@@ -7,15 +7,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Test 
-{
+public class Test {
 	@Id
 	private String testId;
 	private String testName;
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "centerId", referencedColumnName="center_id")
+	@JoinColumn(name = "centerId", referencedColumnName = "center_id")
 	private DiagnosticCenter center;
-	
+
 	public Test() {
 		super();
 	}
@@ -25,8 +24,6 @@ public class Test
 		this.testName = testName;
 		this.center = center;
 	}
-
-	
 
 	public Test(String testId, String testName, DiagnosticCenter center) {
 		super();

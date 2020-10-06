@@ -24,12 +24,5 @@ public class CreateCenterServlet extends HttpServlet
 		String centerName = request.getParameter("centerName");
 		DiagnosticCenter center = new DiagnosticCenter(centerName);
 		
-		EntityManagerFactory factory = JpaUtility.getFactory();
-		EntityManager manager = factory.createEntityManager();
-		EntityTransaction transaction = manager.getTransaction();
-		
-		transaction.begin();
-		manager.persist(center);
-		transaction.commit();
 	}
 }
