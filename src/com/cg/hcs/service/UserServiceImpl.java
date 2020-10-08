@@ -1,6 +1,7 @@
 package com.cg.hcs.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.cg.hcs.dao.IUserDAO;
 import com.cg.hcs.dao.UserDAOImpl;
@@ -39,5 +40,15 @@ public class UserServiceImpl implements IUserService{
 	public boolean validateUser(String userId, String password) {
 		// TODO Auto-generated method stub
 		return userDaoInterface.validateUser(userId, password);
+	}
+	@Override
+	public List<String> getDiagnosticCentersList() {
+		// TODO Auto-generated method stub
+		return userDaoInterface.getDiagnosticCentersList();
+	}
+	@Override
+	public List<String> getTestsList(String centerId) {
+		// TODO Auto-generated method stub
+		return userDaoInterface.getTestsList(centerId);
 	}
 }

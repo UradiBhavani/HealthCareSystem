@@ -1,6 +1,7 @@
 package com.cg.hcs.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.entity.Test;
@@ -25,5 +26,9 @@ public interface IUserService {
 	public boolean validateUser(String userId, String password);
 	
 	public String getRoleCode(String userId);
+	
+	public java.util.List<String> getDiagnosticCentersList();
+	
+	public List<String> getTestsList(String centerId);
 
 }

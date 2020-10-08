@@ -1,11 +1,13 @@
 package com.cg.hcs.dao;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.entity.Test;
@@ -111,7 +113,34 @@ public class UserDAOImpl implements IUserDAO{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public List<String> getDiagnosticCentersList() {
+	// TODO Auto-generated method stub
 
+	factory = JpaUtility.getFactory();
+	manager = factory.createEntityManager();
+
+	Query query = manager.createQuery("select centerName from DaignosticCenter");
+	List<String> centersList = query.getResultList();
+
+	return centersList;
+	}
+	
+	@Override
+	public List<String> getTestsList(String centerId) {
+	factory = JpaUtility.getFactory();
+	manager = factory.createEntityManager();
+
+	Query query = manager.createQuery("select t.testName from Test t where t.centerId=:centerId");
+	query.setParameter("centerId", centerId);
+	List<String> testsList = query.getResultList();
+
+	return testsList;
+	}
+
+
+	
 	@Override
 	public String addTest(Test test) {
 		// TODO Auto-generated method stub
