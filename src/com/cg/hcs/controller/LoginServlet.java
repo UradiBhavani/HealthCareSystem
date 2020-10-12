@@ -17,7 +17,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.User;
 
-
+/**********************************
+ * @Description: Login Servlet Implementation
+ * @author : Yashaswini
+ * @Date : 12/10/2020
+ *
+ **********************************/
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 		

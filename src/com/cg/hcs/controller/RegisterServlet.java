@@ -15,7 +15,12 @@ import com.cg.hcs.entity.Users;
 import com.cg.hcs.service.UserServiceImpl;
 
 
-
+/**********************************
+ * @Description: Register servlet Implementation
+ * @author : Reshma
+ * @Date : 12/10/2020
+ *
+ **********************************/
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	

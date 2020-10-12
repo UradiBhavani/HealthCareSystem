@@ -24,6 +24,12 @@ import com.cg.hcs.entity.Users;
 import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 
+/**********************************
+ * @Description: MakeAppointment Servlet Implementation
+ * @author : Bhavani
+ * @Date : 12/10/2020
+ *
+ **********************************/
 @WebServlet("/MakeAppointmentServlet")
 public class MakeAppointmentServlet extends HttpServlet {
 	

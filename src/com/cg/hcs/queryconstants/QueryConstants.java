@@ -1,5 +1,11 @@
 package com.cg.hcs.queryconstants;
 
+/**********************************
+ * @Description: HealthCareSystem QueryConstants
+ * @author : Bhavani, Reshma
+ * @Date : 12/10/2020
+ *
+ **********************************/
 public class QueryConstants {
 	
 	

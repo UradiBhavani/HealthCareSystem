@@ -14,7 +14,12 @@ import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.service.AdminServiceImpl;
 import com.cg.hcs.service.IAdminService;
 
-
+/**********************************
+ * @Description: CreateCenter Servlet Implementation
+ * @author : Alok
+ * @Date : 12/10/2020
+ *
+ **********************************/
 @WebServlet("/CreateCenterServlet")
 public class CreateCenterServlet extends HttpServlet
 {

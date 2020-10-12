@@ -17,6 +17,12 @@ import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 
+/**********************************
+ * @Description: ShowDiagnosticCenter servlet Implementation
+ * @author : Bhavani
+ * @Date : 12/10/2020
+ *
+ **********************************/
 @WebServlet("/ShowDiagnosticCenterServlet")
 public class ShowDiagnosticCenterServlet extends HttpServlet {
 	

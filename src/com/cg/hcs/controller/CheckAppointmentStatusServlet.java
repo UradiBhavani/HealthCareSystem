@@ -15,6 +15,12 @@ import com.cg.hcs.entity.Appointment;
 import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 
+/**********************************
+ * @Description: CheckAppointmentStatus Servlet Implementation
+ * @author : Reshma
+ * @Date : 12/10/2020
+ *
+ **********************************/
 
 @WebServlet("/CheckAppointmentStatusServlet")
 public class CheckAppointmentStatusServlet extends HttpServlet {

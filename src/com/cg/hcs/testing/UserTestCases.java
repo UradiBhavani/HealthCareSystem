@@ -30,7 +30,7 @@ import com.cg.hcs.utility.JpaUtility;
  * @Date : 12/10/2020
  * 
  ***************************************/
-public class TestCases {
+public class UserTestCases {
 
 	/***********************************
 	 * 
