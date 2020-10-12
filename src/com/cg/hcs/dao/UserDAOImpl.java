@@ -212,7 +212,6 @@ public class UserDAOImpl implements IUserDAO {
 	public String getApplicationId(String userId) {
 		factory = JpaUtility.getFactory();
 		manager = factory.createEntityManager();
-
 		Query query = manager.createQuery("select appId from Appointment a where a.userId=:userId");
 		query.setParameter("userId", userId);
 		// String appId = (String)query.getUniqueResult("appId");
