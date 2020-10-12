@@ -16,9 +16,25 @@ import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.service.AdminServiceImpl;
 import com.cg.hcs.service.IAdminService;
 
+/***************************************
+ * 
+ * Description : HealthCareSystem Testing
+ * @author : Yashaswini, Pratik Prakash, Alok
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
 public class AdminTestCases 
 {
 	
+	/***********************************
+	 * 
+	 * @Description : Testing method to add DiagnosticCenter
+	 * @Author : Alok Pattanaik
+	 * No arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testAddCenter()
 	{
@@ -28,6 +44,15 @@ public class AdminTestCases
 		assertNotNull(centerId);
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Testing method to check Deletion of DiagnosticCenter is successful
+	 * @Author : Alok Pattanaik
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testDeleteCenter()
 	{
@@ -36,6 +61,15 @@ public class AdminTestCases
 		assertTrue(adminService.deleteCenter(center));
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Testing method to view test
+	 * @Author : Pratik Prakash
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testViewTests()
 	{
@@ -45,7 +79,16 @@ public class AdminTestCases
 		assertTrue(true);
 	}
 	
-	 
+	
+	/***********************************
+	 * 
+	 * @Description : Testing method to add test under a particular DiagnosticCenter
+	 * @Author : Pratik Prakash
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	  @Test 
 	  public void testAddTest() 
 	  {
@@ -55,7 +98,15 @@ public class AdminTestCases
 		  assertNotNull(adminService.addTest(test));
 	  }
 	 
-	
+	  /***********************************
+		 * 
+		 * @Description : Testing method for viewing appointment
+		 * @Author : Yashaswini
+		 * No Arguments
+		 * 
+		 * @returns: void
+		 * 
+		 ***********************************/
 	@Test
 	public void testViewAppointment()
 	{

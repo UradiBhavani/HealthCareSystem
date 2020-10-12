@@ -22,9 +22,25 @@ import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 import com.cg.hcs.utility.JpaUtility;
 
+
+/***************************************
+ * 
+ * Description : HealthCareSystem DAO Implementation
+ * @author : Reshma, Yashaswini, Bhavani
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
 public class TestCases {
 
-	
+	/***********************************
+	 * 
+	 * @Description : Testing Register Method
+	 * @Author : Reshma
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testRegister() {
 		Users user = new Users("Abc@1234", "User 2", 78543210l, "usr2@xyz.co", "usr");
@@ -34,6 +50,15 @@ public class TestCases {
 
 	}
 
+	/***********************************
+	 * 
+	 * @Description : Testing RoleCode Method
+	 * @Author : Yashaswini
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	// Test to check getRoleCode()
 	@Test
 	public void testGetRoleCode() 
@@ -43,6 +68,15 @@ public class TestCases {
 		assertEquals("usr",userService.getRoleCode("U_00032"));
 	}
 
+	/***********************************
+	 * 
+	 * @Description : Testing method to test for a valid user
+	 * @Author : Yashaswini
+	 * No arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testValidateUser() {
 		String userId = "U_00032";
@@ -52,12 +86,30 @@ public class TestCases {
 		assertTrue(status);
 	}
 
+	/***********************************
+	 * 
+	 * @Description : Testing method to get DiagnosticCenter list
+	 * @Author : Bhavani
+	 *
+	 *	No arguments
+	 * 
+	 * @returns: void
+	 * 
+	 ***********************************/
 	@Test
 	public void testGetDiagnosticCenterList() {
 		IUserService userService = new UserServiceImpl();
 		assertNotNull(userService.getDiagnosticCentersList());
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Testing method to test TestList is not empty
+	 * @Author : Bhavani
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 ***********************************/
 	@Test
 	public void testGetTestLists() 
 	{
@@ -65,6 +117,14 @@ public class TestCases {
 		assertNotNull(userService.getTestsList("C_00015"));
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Testing method to test appointment successful
+	 * @Author : Bhavani
+	 * No Arguments
+	 * 
+	 * @returns: void
+	 ***********************************/
 	@Test
 	public void testMakeAppointment() 
 	{

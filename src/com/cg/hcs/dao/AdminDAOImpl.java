@@ -13,6 +13,7 @@ import com.cg.hcs.entity.Appointment;
 import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.entity.Test;
 import com.cg.hcs.exception.HCSException;
+import com.cg.hcs.queryconstants.QueryConstants;
 import com.cg.hcs.utility.JpaUtility;
 
 /*This class deals with all the interactions with the database for the role of Admin
@@ -23,9 +24,28 @@ import com.cg.hcs.utility.JpaUtility;
  * removeTest()
  * approveAppointment()
  * All these are public instance methods.*/
+
+
+/**********************************
+ * @Description: HealthCareSystem Admin DAO Implementation
+ * @author : Pratik, Alok, Yashaswini
+ * @Date : 12/10/2020
+ *
+ **********************************/
 public class AdminDAOImpl implements IAdminDAO
 {
 	static final EntityManagerFactory factory = JpaUtility.getFactory();
+	
+	/***********************************
+	 * 
+	 * @Description :Method to add DiagnosticCenter
+	 * @Author : Alok Pattanaik
+	 * @arg1 : Center
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String addCenter(DiagnosticCenter center) throws HCSException 
 	{
@@ -53,6 +73,17 @@ public class AdminDAOImpl implements IAdminDAO
 		
 		
 	}
+	
+	/***********************************
+	 * 
+	 * @Description : Method to delete DiagnosticCenter
+	 * @Author : Alok Pattanaik
+	 * @arg1 : Center
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public boolean deleteCenter(DiagnosticCenter center) throws HCSException 
 	{
@@ -68,7 +99,9 @@ public class AdminDAOImpl implements IAdminDAO
 			if(centerFetched == null)
 				return false;
 			transaction2.begin();
-			manager2.createQuery("Delete a from appoinment a where a.center = '"+centerFetched.getCenterId()+"'").executeUpdate();
+			//manager2.createQuery(QueryConstants.GET_DELETE_STATUS).executeUpdate();
+			Query query = manager2.createQuery(QueryConstants.GET_DELETE_STATUS);
+			query.setParameter(1, centerFetched.getCenterId());
 //			manager.remove(centerFetched.getListOfApps());
 //			manager.remove(centerFetched.getListOfTests());
 			transaction2.commit();
@@ -88,6 +121,18 @@ public class AdminDAOImpl implements IAdminDAO
 		
 		
 	}
+	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to add Test under a particular DiagnosticCenter
+	 * @Author : Pratik Prakash
+	 * @arg1 : Test
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String addTest(Test test) throws HCSException {
 		EntityManager manager = factory.createEntityManager();
@@ -114,6 +159,18 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		return test.getTestId();
 	}
+	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to remove Test
+	 * @Author : Pratik Prakash
+	 * @arg1 : Test
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public boolean removeTest(Test test) throws HCSException 
 	{
@@ -137,6 +194,17 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to approve the Appointment
+	 * @Author : Yashaswini
+	 * @arg1 : Appointment, char
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public boolean approveAppointment(Appointment appointment,char appStatus) throws HCSException 
 	{
@@ -165,25 +233,46 @@ public class AdminDAOImpl implements IAdminDAO
 		
 	}
 	
-	
+	/***********************************
+	 * 
+	 * @Description : Method to view all tests under a center
+	 * @Author : Pratik Prakash
+	 * @arg1 : DiaganosticCenter
+	 * 
+	 * @returns: List<Test>
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public List<Test> viewAllTest(DiagnosticCenter center) 
 	{
 		EntityManager manager = factory.createEntityManager();
 		Test test = new Test(null, null, center);
-		TypedQuery<Test> query = manager.createQuery("SELECT t from Test t WHERE t.center="+"'"+test.getCenter().getCenterId()+"'",Test.class);
+	TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_ALL_TESTS,Test.class);
+	    query.setParameter(1, test.getCenter().getCenterId());
 		List<Test> listOfTests = query.getResultList();
 		System.out.println(listOfTests);
 		return listOfTests;
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Methods to view all pending appointments under a center
+	 * @Author : Yashaswini
+	 * @arg1 : DiagnosticCenter
+	 * 
+	 * @returns: List<Appointment>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<Appointment> viewAllPendingAppointmentByCenter(DiagnosticCenter center) throws HCSException 
 	{
 		EntityManager manager = factory.createEntityManager();
 		try
 		{
-			TypedQuery<Appointment> query = manager.createQuery("SELECT a FROM Appointment a WHERE a.center = '"+center.getCenterId()+"' AND a.isApproved = 'P'",Appointment.class);
+			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_ALL_PENDING_APPOINTMENT_BY_CENTER,Appointment.class);
+			query.setParameter(1,center.getCenterId());
+			query.setParameter(2,'P');
 			List<Appointment> listOfPendingAppointments = query.getResultList();
 			return listOfPendingAppointments;
 		}

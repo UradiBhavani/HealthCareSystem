@@ -12,9 +12,26 @@ import com.cg.hcs.exception.HCSException;
 /*This is the implementation class for Admin module
  * which contains all the methods for implementation of business logic
  * which are public instance methods*/
+
+/**********************************
+ * @Description: HealthCareSystem Admin DAO Implementation
+ * @author : Pratik, Alok, Yashaswini
+ * @Date : 12/10/2020
+ *
+ **********************************/
 public class AdminServiceImpl implements IAdminService 
 {
 
+	/***********************************
+	 * 
+	 * @Description :Method to add DiagnosticCenter
+	 * @Author : Alok Pattanaik
+	 * @arg1 : Center
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String addCenter(DiagnosticCenter center) 
 	{
@@ -39,6 +56,16 @@ public class AdminServiceImpl implements IAdminService
 		return null;
 	}
 
+	/***********************************
+	 * 
+	 * @Description : Method to add Test under a particular DiagnosticCenter
+	 * @Author : Pratik Prakash
+	 * @arg1 : Test
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String addTest(Test test) {
 		IAdminDAO adminDAO = new AdminDAOImpl();
@@ -54,6 +81,16 @@ public class AdminServiceImpl implements IAdminService
 		
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Method to delete DiagnosticCenter
+	 * @Author : Alok Pattanaik
+	 * @arg1 : Center
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	public boolean deleteCenter(DiagnosticCenter center) 
 	{
 		IAdminDAO adminDAO = new AdminDAOImpl();
@@ -69,7 +106,16 @@ public class AdminServiceImpl implements IAdminService
 	}
 
 	
-
+	/***********************************
+	 * 
+	 * @Description : Method to remove Test
+	 * @Author : Pratik Prakash
+	 * @arg1 : Test
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public boolean removeTest(Test test) 
 	{
@@ -85,6 +131,16 @@ public class AdminServiceImpl implements IAdminService
 		return false;
 	}
 
+	/***********************************
+	 * 
+	 * @Description : Method to approve the Appointment
+	 * @Author : Yashaswini
+	 * @arg1 : Appointment, char
+	 * 
+	 * @returns: boolean
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public boolean approveAppointment(Appointment appointment,char appStatus) 
 	{
@@ -100,6 +156,15 @@ public class AdminServiceImpl implements IAdminService
 		return false;
 	}
 	
+	/***********************************
+	 * 
+	 * @Description : Methods to view all pending appointments under a center
+	 * @Author : Yashaswini
+	 * @arg1 : DiagnosticCenter
+	 * 
+	 * @returns: List<Appointment>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<Appointment> viewAllPendingAppointmentByCenter(DiagnosticCenter center)
 	{

@@ -17,6 +17,13 @@ import org.hibernate.annotations.Parameter;
 
 import com.cg.hcs.utility.StringSequenceIdGenerator;
 
+/***************************************
+ * 
+ * Description : HealthCareSystem Appointment class
+ * @author : Yashaswini
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
 
 @Entity
 @Table(

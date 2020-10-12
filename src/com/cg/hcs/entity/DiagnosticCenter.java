@@ -17,6 +17,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 
+/***************************************
+ * 
+ * Description : HealthCareSystem DiagnosticCenter class
+ * @author : Alok Pattanaik
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
+
 @Entity
 public class DiagnosticCenter 
 {

@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import com.cg.hcs.entity.Users;
 import com.cg.hcs.exception.HCSException;
+import com.cg.hcs.queryconstants.QueryConstants;
 import com.cg.hcs.utility.JpaUtility;
 
 
@@ -28,13 +29,29 @@ import com.cg.hcs.entity.Test;
 import com.cg.hcs.entity.Users;
 import com.cg.hcs.utility.JpaUtility;
 
-
+/***************************************
+ * 
+ * Description : HealthCareSystem DAO Implementation
+ * @author : Reshma, Yashaswini, Bhavani
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
 
 public class UserDAOImpl implements IUserDAO{
 	
 	static final EntityManagerFactory factory = JpaUtility.getFactory();
 	EntityManager manager = null;
 	EntityTransaction transaction = null;
+	
+	/***********************************
+	 * 
+	 * @Description : User registration Method
+	 * @Author : Reshma
+	 * @arg1 : Users
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 ***********************************/
 
 	@Override
 	public String register(Users user) throws HCSException 
@@ -61,7 +78,16 @@ public class UserDAOImpl implements IUserDAO{
 		return user.getUserId();
 	}
 	
-	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the RoleCode
+	 * @Author : Yashaswini
+	 * @arg1 : String
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	
 	@Override
 	public String getRoleCode(String userId) throws HCSException 
@@ -88,6 +114,15 @@ public class UserDAOImpl implements IUserDAO{
 
 
 
+	/***********************************
+	 * 
+	 * @Description : User registration MethodMethod to validate the user
+	 * @Author : Yashaswini
+	 * @arg1 : String,String
+	 * 
+	 * @returns: Boolean
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public boolean validateUser(String userId, String password) throws HCSException 
 	{
@@ -116,6 +151,16 @@ public class UserDAOImpl implements IUserDAO{
 	}
 	
 
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the centers list
+	 * @Author : Bhavani
+	 *
+	 *	No arguments
+	 * 
+	 * @returns: List<DiagnosticCenter>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException 
 	{
@@ -124,7 +169,7 @@ public class UserDAOImpl implements IUserDAO{
 		List<DiagnosticCenter> centersList = null;
 		try
 		{
-			TypedQuery<DiagnosticCenter> query = manager.createQuery("select c from DiagnosticCenter c",DiagnosticCenter.class);
+			TypedQuery<DiagnosticCenter> query = manager.createQuery(QueryConstants.GET_DIAGNOSTICCENTER_lIST,DiagnosticCenter.class);
 			centersList = query.getResultList();
 		}
 		catch (PersistenceException e) 
@@ -139,6 +184,16 @@ public class UserDAOImpl implements IUserDAO{
 		return centersList;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the Tests list under a particular DiagnosticCenter
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: List<Test>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<Test> getTestsList(String centerId) throws HCSException 
 	{
@@ -148,7 +203,8 @@ public class UserDAOImpl implements IUserDAO{
 		List<Test> testsList = null;
 		try
 		{
-			TypedQuery<Test> query = manager.createQuery("SELECT t FROM Test t where t.center = '"+centerId+"'", Test.class); 
+			TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_TEST_LIST, Test.class); 
+			query.setParameter(1, centerId);
 			testsList = query.getResultList();
 		}
 		catch (PersistenceException e) 
@@ -163,7 +219,15 @@ public class UserDAOImpl implements IUserDAO{
 	}
 
 
-
+	/***********************************
+	 * 
+	 * @Description : Method to book an appointment
+	 * @Author : Bhavani
+	 * @arg1 : Appointment
+	 * 
+	 * @returns: int
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public int makeAppointment(Appointment appointment) //throws HCSException 
 	{
@@ -201,7 +265,16 @@ public class UserDAOImpl implements IUserDAO{
 	}
 
 
-
+	/***********************************
+	 * 
+	 * @Description : Method to retrieve the user based on userId
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: Users
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public Users getUser(String userId) throws HCSException 
 	{
@@ -233,6 +306,16 @@ public class UserDAOImpl implements IUserDAO{
 
 
 
+	/***********************************
+	 * 
+	 * @Description : Method the Test using testname and centerId
+	 * @Author : Bhavani
+	 * @arg1 : String, String
+	 * 
+	 * @returns: Test
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public Test getTest(String testName,String centerId) throws HCSException 
 	{
@@ -241,7 +324,9 @@ public class UserDAOImpl implements IUserDAO{
 		manager = factory.createEntityManager();
 		try
 		{
-			TypedQuery<Test> query = manager.createQuery("SELECT t from Test t where t.testName = '"+testName+"' and t.center ='"+centerId+"'", Test.class); 
+			TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_TEST, Test.class); 
+			query.setParameter(1,testName);
+			query.setParameter(2, centerId);
 			Test test = query.getSingleResult();
 			return test;
 		}
@@ -253,7 +338,16 @@ public class UserDAOImpl implements IUserDAO{
 	}
 
 
-
+	/***********************************
+	 * 
+	 * @Description : Method to get the DiagnosticCenter using centerId
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: DiagnosticCenter
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public DiagnosticCenter getDiagnosticCenter(String centerId) throws HCSException {
 		
@@ -277,6 +371,16 @@ public class UserDAOImpl implements IUserDAO{
 
 
 
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the Status of the Appointment
+	 * @Author : Reshma
+	 * @arg1 : String
+	 * 
+	 * @returns: List<Appointment>
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public List<Appointment> getAppointmentStatus(String userId) throws HCSException 
 	{
@@ -285,7 +389,8 @@ public class UserDAOImpl implements IUserDAO{
 		List<Appointment> appointmentList = null;
 		try
 		{
-			TypedQuery<Appointment> query = manager.createQuery("Select a from Appointment a where a.user = '"+userId+"'", Appointment.class);
+			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_APPOINTMENT_STATUS, Appointment.class);
+			query.setParameter(1, userId);
 			appointmentList = query.getResultList();
 			return appointmentList;
 		}
@@ -300,7 +405,16 @@ public class UserDAOImpl implements IUserDAO{
 	}
 
 
-
+	/***********************************
+	 * 
+	 * @Description : Method to retrieve the applicationId using userId
+	 * @Author : Reshma
+	 * @arg1 : String
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String getApplicationId(String userId) 
 	{

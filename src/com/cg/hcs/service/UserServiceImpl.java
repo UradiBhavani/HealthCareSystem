@@ -11,9 +11,25 @@ import com.cg.hcs.entity.Test;
 import com.cg.hcs.entity.Users;
 import com.cg.hcs.exception.HCSException;
 
+/***************************************
+ * 
+ * Description : HealthCareSystem Service Implementation
+ * @author : Reshma, Yashaswini, Bhavani
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
 public class UserServiceImpl implements IUserService{
 	IUserDAO userDaoInterface = new UserDAOImpl();
 	
+	/***********************************
+	 * 
+	 * @Description : User registration Method
+	 * @Author : Reshma
+	 * @arg1 : Users
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 ***********************************/
 	public String register(Users user) {
 		try 
 		{
@@ -25,6 +41,17 @@ public class UserServiceImpl implements IUserService{
 		}
 		return null;
 	}
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the RoleCode
+	 * @Author : Yashaswini
+	 * @arg1 : String
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	public String getRoleCode(String userId) {
 		
 		try 
@@ -38,6 +65,16 @@ public class UserServiceImpl implements IUserService{
 		return null;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : User registration MethodMethod to validate the user
+	 * @Author : Yashaswini
+	 * @arg1 : String,String
+	 * 
+	 * @returns: Boolean
+	 * @Exception : HCSException
+	 ***********************************/
 	public boolean validateUser(String userId, String password) 
 	{
 		
@@ -52,6 +89,16 @@ public class UserServiceImpl implements IUserService{
 		return false;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to book an appointment
+	 * @Author : Bhavani
+	 * @arg1 : Appointment
+	 * 
+	 * @returns: int
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public int makeAppointment(Appointment appointment) 
 	{
@@ -66,6 +113,17 @@ public class UserServiceImpl implements IUserService{
 		return 0;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the centers list
+	 * @Author : Bhavani
+	 *
+	 *	No arguments
+	 * 
+	 * @returns: List<DiagnosticCenter>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<DiagnosticCenter> getDiagnosticCentersList() 
 	{
@@ -80,6 +138,16 @@ public class UserServiceImpl implements IUserService{
 		return null;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the Tests list under a particular DiagnosticCenter
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: List<Test>
+	 * @Exception : HCSException
+	 ***********************************/
 	@Override
 	public List<Test> getTestsList(String centerId) 
 	{
@@ -94,6 +162,17 @@ public class UserServiceImpl implements IUserService{
 		return null;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrieve the user based on userId
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: Users
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/	
 	@Override
 	public Users getUser(String userId) 
 	{
@@ -108,6 +187,17 @@ public class UserServiceImpl implements IUserService{
 		return null;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method the Test using testname and centerId
+	 * @Author : Bhavani
+	 * @arg1 : String, String
+	 * 
+	 * @returns: Test
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public Test getTest(String testName,String centerName) 
 	{
@@ -122,6 +212,17 @@ public class UserServiceImpl implements IUserService{
 		return null;
 	}
 	
+	
+	/***********************************
+	 * 
+	 * @Description : Method to get the DiagnosticCenter using centerId
+	 * @Author : Bhavani
+	 * @arg1 : String
+	 * 
+	 * @returns: DiagnosticCenter
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public DiagnosticCenter getDiagnosticCenter(String centerId) 
 	{
@@ -135,6 +236,17 @@ public class UserServiceImpl implements IUserService{
 		}
 		return null;
 	}
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrive the Status of the Appointment
+	 * @Author : Reshma
+	 * @arg1 : String
+	 * 
+	 * @returns: List<Appointment>
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public List<Appointment> getAppointmentStatus(String userId)
 	{
@@ -154,6 +266,17 @@ public class UserServiceImpl implements IUserService{
 		
 		return null;
 	}
+	
+	/***********************************
+	 * 
+	 * @Description : Method to retrieve the applicationId using userId
+	 * @Author : Reshma
+	 * @arg1 : String
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
 	@Override
 	public String getApplicationId(String userId) {
 		return userDaoInterface.getApplicationId(userId);

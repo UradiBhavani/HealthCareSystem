@@ -13,6 +13,14 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import com.cg.hcs.utility.StringSequenceIdGenerator;
+/***************************************
+ * 
+ * Description : HealthCareSystem Test class
+ * @author : Pratik Prakash
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
+
 
 @Entity
 public class Test 

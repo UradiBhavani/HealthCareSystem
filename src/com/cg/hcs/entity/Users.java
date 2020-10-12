@@ -16,6 +16,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 
+/***************************************
+ * 
+ * Description : HealthCareSystem Users Class
+ * @author : Reshma, Bhavani
+ * @Date : 12/10/2020
+ * 
+ ***************************************/
+
 @Entity
 public class Users 
 {
