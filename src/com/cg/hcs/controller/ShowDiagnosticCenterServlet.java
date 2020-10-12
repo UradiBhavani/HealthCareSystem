@@ -27,9 +27,9 @@ public class ShowDiagnosticCenterServlet extends HttpServlet {
 		try{
 			List<String> centersList = userService.getDiagnosticCentersList();
 			request.setAttribute("centersList", centersList);
-			List<String> testList = userService.getTestList();
-			request.setAttribute("testList", testList);
-			request.getRequestDispatcher("showCenters.jsp").forward(request, response);
+			/*List<String> testList = userService.getTestList();
+			request.setAttribute("testList", testList);*/
+			request.getRequestDispatcher("makeAppointment.jsp").forward(request, response);
 		}
 		catch(Exception e) {
 			

@@ -26,43 +26,48 @@ import com.cg.hcs.service.UserServiceImpl;
 
 @WebServlet("/MakeAppointmentServlet")
 public class MakeAppointmentServlet extends HttpServlet {
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		IUserDAO userDAO = new UserDAOImpl();
 		IUserService userService = new UserServiceImpl();
 		RequestDispatcher dispatcher = null;
-
-		try {
-
-			Users user = userService.getUser(request.getParameter("userId"));
-			Test test = userService.getTest(request.getParameter("testName"), request.getParameter("centerName"));
-			DiagnosticCenter diagnosticCenter = userService.getDiagnosticCenter(request.getParameter("centerName"));
-			String appDateTime = request.getParameter("date") + request.getParameter("time");
-
+		
+		try{
+			
+			
+			
+	        Users user = userService.getUser(request.getParameter("userId"));
+	        Test test = userService.getTest(request.getParameter("testName"),request.getParameter("centerName"));
+	        DiagnosticCenter diagnosticCenter = userService.getDiagnosticCenter(request.getParameter("centerName"));
+	        String appDateTime = request.getParameter("date") + request.getParameter("time");
+	        
+			
+			
 			Appointment appointment = new Appointment();
-
+			
 			appointment.setAppDate(request.getParameter("appDateTime"));
 			appointment.setIsApproved('P');
 			appointment.setCenter(diagnosticCenter);
 			appointment.setTest(test);
 			appointment.setUser(user);
-
+			
 			String makeAppointment = userService.makeAppointment(appointment);
-
-			if (makeAppointment.equals("success")) {
-				// Display a message that user has Booked appointment succefully
+			
+			if(makeAppointment.equals("success")) {
+				//Display a message that user has Booked appointment succefully
 				dispatcher = request.getRequestDispatcher("MakeAppointment.jsp");
 				dispatcher.forward(request, response);
 			}
-
-		} catch (Exception e) {
-
+			
+			
+		}catch(Exception e) {
+		
 			System.out.println(e.getMessage());
-
+			
 		}
-
+		
 	}
 
 }

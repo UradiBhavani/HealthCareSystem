@@ -31,7 +31,7 @@ public class ShowTestServlet extends HttpServlet {
 			
 			List<String> testList = userService.getTestsList(center.getCenterId());
 			request.setAttribute("testList", testList);
-			request.getRequestDispatcher("showCenters.jsp").include(request,response);
+			request.getRequestDispatcher("showTest.jsp").include(request,response);
 		}
 		catch(Exception e){
 			System.out.println(e.getMessage());
