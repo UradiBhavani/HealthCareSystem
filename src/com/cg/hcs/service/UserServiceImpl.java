@@ -9,49 +9,146 @@ import com.cg.hcs.entity.Appointment;
 import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.entity.Test;
 import com.cg.hcs.entity.Users;
+import com.cg.hcs.exception.HCSException;
 
 public class UserServiceImpl implements IUserService{
 	IUserDAO userDaoInterface = new UserDAOImpl();
 	
 	public String register(Users user) {
-		return userDaoInterface.register(user);
+		try 
+		{
+			return userDaoInterface.register(user);
+		}
+		catch (HCSException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 	public String getRoleCode(String userId) {
-		// TODO Auto-generated method stub
-		return userDaoInterface.getRoleCode(userId);
+		
+		try 
+		{
+			return userDaoInterface.getRoleCode(userId);
+		}
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
-	public boolean validateUser(String userId, String password) {
-		// TODO Auto-generated method stub
-		return userDaoInterface.validateUser(userId, password);
+	
+	public boolean validateUser(String userId, String password) 
+	{
+		
+		try 
+		{
+			return userDaoInterface.validateUser(userId, password);
+		} 
+		catch (HCSException e) 
+		{	
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	@Override
+	public int makeAppointment(Appointment appointment) 
+	{
+		try
+		{
+			return userDaoInterface.makeAppointment(appointment);
+		} 
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public List<DiagnosticCenter> getDiagnosticCentersList() 
+	{
+		try 
+		{
+			return userDaoInterface.getDiagnosticCentersList();
+		}
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Test> getTestsList(String centerId) 
+	{
+		try 
+		{
+			return userDaoInterface.getTestsList(centerId);
+		} 
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Users getUser(String userId) 
+	{
+		try 
+		{
+			return userDaoInterface.getUser(userId);
+		}
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Test getTest(String testName,String centerName) 
+	{
+		try 
+		{
+			return userDaoInterface.getTest(testName, centerName);
+		}
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public DiagnosticCenter getDiagnosticCenter(String centerId) 
+	{
+		try 
+		{
+			return userDaoInterface.getDiagnosticCenter(centerId);
+		} 
+		catch (HCSException e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	@Override
-	public String makeAppointment(Appointment appointment) {
-		return userDaoInterface.makeAppointment(appointment);
+	public List<Appointment> getAppointmentStatus(String userId)
+	{
+		try
+		{
+			return userDaoInterface.getAppointmentStatus(userId);
+		} 
+		catch (HCSException e) 
+		{	
+			e.printStackTrace();
+		}
+		return null;
 	}
-	@Override
-	public List<String> getDiagnosticCentersList() {
-		return userDaoInterface.getDiagnosticCentersList();
-	}
-	@Override
-	public List<String> getTestsList(String centerId) {
-		return userDaoInterface.getTestsList(centerId);
-	}
-	@Override
-	public Users getUser(String userId) {
-		return userDaoInterface.getUser(userId);
-	}
-	@Override
-	public Test getTest(String testName,String centerName) {
-		return userDaoInterface.getTest(testName, centerName);
-	}
-	@Override
-	public DiagnosticCenter getDiagnosticCenter(String centerName) {
-		return userDaoInterface.getDiagnosticCenter(centerName);
-	}
-	@Override
-	public List<Appointment> getAppointmentStatus(String userId) {
-		return userDaoInterface.getAppointmentStatus(userId);
-	}
+	
 	@Override
 	public List<String> getTestList() {
 		

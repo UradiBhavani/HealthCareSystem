@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -20,7 +18,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 
 @Entity
-@Table(name="DiagnosticCenter")
 public class DiagnosticCenter 
 {
 	@Id
@@ -66,8 +63,7 @@ public class DiagnosticCenter
 		this.listOfTests = listOfTests;
 	}
 	
-	
-	
+
 	public String getCenterId() {
 		return centerId;
 	}
@@ -86,13 +82,14 @@ public class DiagnosticCenter
 	public void setListOfTests(List<Test> listOfTests) {
 		this.listOfTests = listOfTests;
 	}
-	public List<Appointment> getListOfAppointments() {
+	
+	public List<Appointment> getListOfApps() {
 		return listOfApps;
 	}
-	public void setListOfAppointments(List<Appointment> listOfAppointments) {
-		this.listOfApps = listOfAppointments;
+
+	public void setListOfApps(List<Appointment> listOfApps) {
+		this.listOfApps = listOfApps;
 	}
-	
 	
 	
 	

@@ -3,6 +3,8 @@ package com.cg.hcs.dao;
 
 
 import com.cg.hcs.entity.Users;
+import com.cg.hcs.exception.HCSException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,25 +15,25 @@ import com.cg.hcs.entity.Users;
 
 public interface IUserDAO {
 
-	public String register(Users user);
+	public String register(Users user) throws HCSException;
 	
-	public boolean validateUser(String userId, String password);
+	public boolean validateUser(String userId, String password) throws HCSException;
 	
-	public String getRoleCode(String userId);
+	public String getRoleCode(String userId) throws HCSException;
 	
-	String makeAppointment(Appointment appointment);
+	public int makeAppointment(Appointment appointment) throws HCSException;
 	
-	public List<String> getDiagnosticCentersList();
+	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException;
 	
-	List<String> getTestsList(String centerId);
+	List<Test> getTestsList(String centerId) throws HCSException;
 	
-	public Users getUser(String userId);
+	public Users getUser(String userId) throws HCSException;
 	 
-	public Test getTest(String testName,String centerName);
+	public Test getTest(String testName,String centerName) throws HCSException;
 	
-	public DiagnosticCenter getDiagnosticCenter(String centerName);
+	public DiagnosticCenter getDiagnosticCenter(String centerName) throws HCSException;
 	
-	public List<Appointment> getAppointmentStatus(String userId);
+	public List<Appointment> getAppointmentStatus(String userId) throws HCSException;
 	
 	public String getApplicationId(String userId);
 

@@ -1,6 +1,7 @@
 package com.cg.hcs.testing;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
@@ -22,66 +24,29 @@ import com.cg.hcs.utility.JpaUtility;
 
 public class TestCases {
 
-	// Test to check addCenter()
-	@Test
-	public void testAddCenter() {
-		IAdminService adminService = new AdminServiceImpl();
-		DiagnosticCenter center = new DiagnosticCenter("Sample Center");
-		String centerId = adminService.addCenter(center);
-		assertNotNull(centerId);
-	}
-
-	// Test to check deleteCenter()
-	@Test
-	public void testDeleteCenter() {
-		DiagnosticCenter center = new DiagnosticCenter("C_00009", "Delete");
-		IAdminService adminService = new AdminServiceImpl();
-		assertTrue(adminService.deleteCenter(center));
-	}
-
-	/*
-	 * @Test public void testCreateCenter() throws HCSException { DiagnosticCenter
-	 * center = new DiagnosticCenter("Mumbai"); IAdminService adminDAO = new
-	 * AdminServiceImpl(); String returnedValue = adminDAO.addCenter(center);
-	 * assertEquals("C_000001", returnedValue); }
-	 */
-
-	// Test to check register()
+	
 	@Test
 	public void testRegister() {
-		Users user = new Users();
-		user.setUserId("101");
-		user.setUserName("Alok");
-		user.setUserPassword("#Alok1234");
-		user.setUserRole("usr");
-		user.setEmail("alok@gmail.com");
-		user.setContactNo(Long.parseLong("7540906497"));
-		IUserService userDAO = new UserServiceImpl();
-		String returnedValue = userDAO.register(user);
-		assertEquals("102", returnedValue);
+		Users user = new Users("Abc@1234", "User 2", 78543210l, "usr2@xyz.co", "usr");
+		
+		IUserService userService = new UserServiceImpl();
+		assertNotNull(userService.register(user));
 
 	}
 
 	// Test to check getRoleCode()
 	@Test
-	public void testGetRoleCode() {
-		Users user = new Users();
-		user.setUserId("101");
-		user.setUserName("Alok");
-		user.setUserPassword("#Alok1234");
-		user.setUserRole("usr");
-		user.setEmail("alok@gmail.com");
-		user.setContactNo(Long.parseLong("7540906497"));
-		IUserService userDAO = new UserServiceImpl();
-		String userId = userDAO.register(user);
-		String returnedValue = userDAO.getRoleCode(userId);
-		assertEquals("usr", returnedValue);
+	public void testGetRoleCode() 
+	{
+		
+		IUserService userService = new UserServiceImpl();
+		assertEquals("usr",userService.getRoleCode("U_00032"));
 	}
 
 	@Test
 	public void testValidateUser() {
-		String userId = "001";
-		String password = "#Alok1234";
+		String userId = "U_00032";
+		String password = "Abcd@123";
 		IUserService userDAO = new UserServiceImpl();
 		boolean status = userDAO.validateUser(userId, password);
 		assertTrue(status);
@@ -89,21 +54,27 @@ public class TestCases {
 
 	@Test
 	public void testGetDiagnosticCenterList() {
-		IUserService userDAO = new UserServiceImpl();
-		assertNotNull(userDAO.getDiagnosticCentersList());
+		IUserService userService = new UserServiceImpl();
+		assertNotNull(userService.getDiagnosticCentersList());
 	}
 	
 	@Test
-	public void testGetTestLists() {
-		IUserService userDAO = new UserServiceImpl();
-		assertNotNull(userDAO.getTestsList("C00002"));
+	public void testGetTestLists() 
+	{
+		IUserService userService = new UserServiceImpl();
+		assertNotNull(userService.getTestsList("C_00015"));
 	}
 	
 	@Test
-	public void testMakeAppointment() {
-		IUserService userDAO = new UserServiceImpl();
-		Appointment appointment = new Appointment();
-		//INCOMPLETE
+	public void testMakeAppointment() 
+	{
+		Users user = new Users("U_00032");
+		com.cg.hcs.entity.Test test = new com.cg.hcs.entity.Test("T_00000028");
+		Appointment appointment = new Appointment("12/10/2020 18:35", 'P', test, user);
+		
+		IUserService userService = new UserServiceImpl();
+		assertEquals(102, userService.makeAppointment(appointment));
+		
 	}
 	
 	

@@ -6,8 +6,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.cg.hcs.entity.Users;
+import com.cg.hcs.exception.HCSException;
 import com.cg.hcs.utility.JpaUtility;
 
 
@@ -30,29 +32,31 @@ import com.cg.hcs.utility.JpaUtility;
 
 public class UserDAOImpl implements IUserDAO{
 	
-	EntityManagerFactory factory = null;
+	static final EntityManagerFactory factory = JpaUtility.getFactory();
 	EntityManager manager = null;
 	EntityTransaction transaction = null;
 
 	@Override
-	public String register(Users user) {
-		
-		factory = JpaUtility.getFactory();
-		
+	public String register(Users user) throws HCSException 
+	{
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
 		transaction.begin();
 				
-		try {
+		try
+		{
 			manager.persist(user);
 			transaction.commit();
-		} catch (RuntimeException e) {
-			transaction.rollback();
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} finally {
-			//manager.close();
-			//factory.close();
+		}
+		catch (PersistenceException e)
+		{
+			if(transaction.isActive())
+				transaction.rollback();
+			throw new HCSException("Error while registering the new user");
+		}
+		finally 
+		{
+			manager.close();
 		}
 		return user.getUserId();
 	}
@@ -60,21 +64,24 @@ public class UserDAOImpl implements IUserDAO{
 	
 	
 	@Override
-	public String getRoleCode(String userId) {
-		
-		factory = JpaUtility.getFactory();
+	public String getRoleCode(String userId) throws HCSException 
+	{
+	
 		manager = factory.createEntityManager();
 		Users user = null;
 
 		
-		try {
-				user = manager.find(Users.class, userId);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			
+		try 
+		{
+			user = manager.find(Users.class, userId);
+		} 
+		catch (PersistenceException e) 
+		{
+			throw new HCSException("Error while retreiving the role code");
+		}
+		finally 
+		{	
 			manager.close();
-			factory.close();
 		}
 		return user.getUserRole();
 	}
@@ -82,8 +89,9 @@ public class UserDAOImpl implements IUserDAO{
 
 
 	@Override
-	public boolean validateUser(String userId, String password) {
-		factory = JpaUtility.getFactory();
+	public boolean validateUser(String userId, String password) throws HCSException 
+	{
+	
 		manager = factory.createEntityManager();
 		Users user = null;
 		
@@ -95,151 +103,213 @@ public class UserDAOImpl implements IUserDAO{
 					return true;
 				else
 					return false;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}finally {
-			//manager.close();
-			//factory.close();
+		} 
+		catch (PersistenceException e)
+		{
+			throw new HCSException("Error while validating user");
 		}
-		return false;
+		finally 
+		{
+			manager.close();
+		}
+		
 	}
 	
 
 	@Override
-	public List<String> getDiagnosticCentersList() {
-		// TODO Auto-generated method stub
-	
-		factory = JpaUtility.getFactory();
+	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException 
+	{
+		
 		manager = factory.createEntityManager();
-	
-		Query query = manager.createQuery("select centerName from DiagnosticCenter");
-		List<String> centersList = query.getResultList();
+		List<DiagnosticCenter> centersList = null;
+		try
+		{
+			TypedQuery<DiagnosticCenter> query = manager.createQuery("select c from DiagnosticCenter c",DiagnosticCenter.class);
+			centersList = query.getResultList();
+		}
+		catch (PersistenceException e) 
+		{
+			throw new HCSException("Error while fetching centers List");
+		}
+		finally 
+		{
+			manager.close();
+		}
 	
 		return centersList;
 	}
 	
 	@Override
-	public List<String> getTestsList(String centerId) {
-		factory = JpaUtility.getFactory();
-		manager = factory.createEntityManager();
-	
-		Query query = manager.createQuery("select t.testName from Test t where t.centerId=:centerId");
-		query.setParameter("centerId", centerId);
+	public List<Test> getTestsList(String centerId) throws HCSException 
+	{
 		
-		List<String> testsList = query.getResultList();
-	
+		manager = factory.createEntityManager();
+		
+		List<Test> testsList = null;
+		try
+		{
+			TypedQuery<Test> query = manager.createQuery("SELECT t FROM Test t where t.center = '"+centerId+"'", Test.class); 
+			testsList = query.getResultList();
+		}
+		catch (PersistenceException e) 
+		{
+			throw new HCSException("Cannot retrieve test list from center "+centerId);
+		}
+		finally
+		{
+			manager.close();
+		}
 		return testsList;
 	}
 
 
 
 	@Override
-	public String makeAppointment(Appointment appointment) {
+	public int makeAppointment(Appointment appointment) //throws HCSException 
+	{
 		
-		factory = JpaUtility.getFactory();
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
-
-		transaction.begin();
 		
-		String result="unsuccessfull";
-		try {
+		
+		try 
+		{
+			transaction.begin();
+			Users user = manager.find(Users.class, appointment.getUser().getUserId());
+			Test test = manager.find(Test.class, appointment.getTest().getTestId());
+			DiagnosticCenter center = manager.find(DiagnosticCenter.class, test.getCenter().getCenterId());
+			appointment.setUser(user);
+			appointment.setTest(test);
+			appointment.setCenter(center);
 			manager.persist(appointment);
 			transaction.commit();
-			result="success";
-		} catch (RuntimeException e) {
-			transaction.rollback();
-			System.out.println(e.getMessage());
-		} finally {
-			manager.close();
-			factory.close();
+			return appointment.getAppId();
+		} 
+		catch (PersistenceException e)
+		{
+			if(transaction.isActive())
+				transaction.rollback();
+//			throw new HCSException("Error while making appointment" + e.getMessage());
+			e.printStackTrace();
 		}
+		finally 
+		{
+			manager.close();
+		}
+		return 0;
 		
-		return result;
 	}
 
 
 
 	@Override
-	public Users getUser(String userId) {
-		factory = JpaUtility.getFactory();
+	public Users getUser(String userId) throws HCSException 
+	{
 		
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
 
-		transaction.begin();
-		
 		Users user = null;
-		try {
+		
+		try
+		{
+			transaction.begin();
 			user = manager.find(Users.class,userId);
 			transaction.commit();
-		} catch (RuntimeException e) {
-			transaction.rollback();
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		} finally {
+			return user;
+		} 
+		catch (RuntimeException e) 
+		{
+			if(transaction.isActive())
+				transaction.rollback();
+			throw new HCSException("Error while retreiving user");
+		}
+		finally
+		{
 			manager.close();
-			factory.close();
 		}
 		
-		return user;
 	}
 
 
 
 	@Override
-	public Test getTest(String testName,String centerName) {
-		factory = JpaUtility.getFactory();
+	public Test getTest(String testName,String centerId) throws HCSException 
+	{
+		
 		
 		manager = factory.createEntityManager();
+		try
+		{
+			TypedQuery<Test> query = manager.createQuery("SELECT t from Test t where t.testName = '"+testName+"' and t.center ='"+centerId+"'", Test.class); 
+			Test test = query.getSingleResult();
+			return test;
+		}
+		catch (PersistenceException e)
+		{
+			throw new HCSException("Error while getting test");
+		}
 		
-		Query query = manager.createQuery("select * from Test t where t.testName=:testName and t.centerName=:centerName");
-		query.setParameter("testName", testName);
-		query.setParameter("centerName", centerName);
-		
-		Test test = (Test) query.getSingleResult();
-		
-		return test;
 	}
 
 
 
 	@Override
-	public DiagnosticCenter getDiagnosticCenter(String centerName) {
-		factory = JpaUtility.getFactory();
+	public DiagnosticCenter getDiagnosticCenter(String centerId) throws HCSException {
+		
 		manager = factory.createEntityManager();
+		DiagnosticCenter center = null;
+		try
+		{
+			center = manager.find(DiagnosticCenter.class, centerId);
+			return center;
+		}
+		catch(PersistenceException e)
+		{
+			throw new HCSException("Error while retrieving center with id "+centerId);
+		}
+		finally
+		{
+			manager.close();
+		}
 		
-		Query query = manager.createQuery("select * from DiagnosticCenter c where c.centerName=:centerName");
-		query.setParameter("centerName", centerName);
-		
-		DiagnosticCenter diagnosticCenter = (DiagnosticCenter) query.getSingleResult();
-		
-		return diagnosticCenter;
 	}
 
 
 
 	@Override
-	public List<Appointment> getAppointmentStatus(String userId) {
-		factory = JpaUtility.getFactory();
-		manager = factory.createEntityManager();
+	public List<Appointment> getAppointmentStatus(String userId) throws HCSException 
+	{
 		
-		Query query = manager.createQuery("select * from Appointment a where a.Users.userId=:userId");
-		query.setParameter("userId", userId);
-		List<Appointment> appointmentList = query.getResultList();
-		return appointmentList;
+		manager = factory.createEntityManager();
+		List<Appointment> appointmentList = null;
+		try
+		{
+			TypedQuery<Appointment> query = manager.createQuery("Select a from Appointment a where a.user = '"+userId+"'", Appointment.class);
+			appointmentList = query.getResultList();
+			return appointmentList;
+		}
+		catch (PersistenceException e) 
+		{
+			throw new HCSException("Error while retrieving all appointments");
+		}
+		finally
+		{
+			manager.close();
+		}
 	}
 
 
 
 	@Override
-	public String getApplicationId(String userId) {
-		factory = JpaUtility.getFactory();
+	public String getApplicationId(String userId) 
+	{
+		
 		manager = factory.createEntityManager();
 		
-		Query query = manager.createQuery("select appId from Appointment a where a.userId=:userId");
-		query.setParameter("userId", userId);
-		//String appId = (String)query.getUniqueResult("appId");
+//		Query query = manager.createQuery("select appId from Appointment a where a.userId=:userId");
+//		query.setParameter("userId", userId);
+//		//String appId = (String)query.getUniqueResult("appId");
 		return null;
 	}
 		

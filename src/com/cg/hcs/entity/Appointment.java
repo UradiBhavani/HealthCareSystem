@@ -3,21 +3,40 @@ package com.cg.hcs.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import com.cg.hcs.utility.StringSequenceIdGenerator;
+
 
 @Entity
 @Table(
 		uniqueConstraints= 
-		@UniqueConstraint (columnNames={"appDate","testId"})
+		{@UniqueConstraint (columnNames={"appDate","testId"}),
+		 @UniqueConstraint (columnNames={"appDate","testId"})
+		}
+		
 		)
 public class Appointment 
 {
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "center_seq")
+    @GenericGenerator(
+        name = "center_seq", 
+        strategy = "com.cg.hcs.utility.StringSequenceIdGenerator", 
+        parameters = {
+            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = ""),
+            @Parameter(name = StringSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })
 	private int appId;
 	private String appDate;
 	private char isApproved;
@@ -26,11 +45,11 @@ public class Appointment
 	@JoinColumn(name="testId", referencedColumnName="testId")
 	private Test test;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="userId", referencedColumnName="userId")
 	private Users user;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "centerId", referencedColumnName = "center_id")
 	private DiagnosticCenter center;
 	
@@ -149,7 +168,6 @@ public class Appointment
 		return "Appointment [appointmentId=" + appId + ", appointmentDateTime=" + appDate
 				+ ", isApproved=" + isApproved + ", test=" + test + ", user=" + user + "]";
 	}
-	
 	
 	
 }

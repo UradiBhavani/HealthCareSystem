@@ -43,6 +43,25 @@ public class Users
 	public Users() {
 		super();
 	}
+	
+	
+	public Users(String userId) {
+		super();
+		this.userId = userId;
+	}
+
+
+	public Users(String userPassword, String userName, Long contactNo, String email, String userRole) {
+		super();
+		this.userPassword = userPassword;
+		this.userName = userName;
+		this.contactNo = contactNo;
+		this.email = email;
+		this.userRole = userRole;
+	}
+
+
+
 	public Users(String userId, String userPassword, String userName, Long contactNo, String email, String userRole,
 			List<Appointment> appointmentList) {
 		super();
@@ -54,6 +73,8 @@ public class Users
 		this.userRole = userRole;
 		this.appointmentList = appointmentList;
 	}
+	
+	
 	public String getUserId() {
 		return userId;
 	}

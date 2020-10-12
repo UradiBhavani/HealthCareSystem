@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cg.hcs.dao.IUserDAO;
 import com.cg.hcs.dao.UserDAOImpl;
 import com.cg.hcs.entity.DiagnosticCenter;
+import com.cg.hcs.entity.Test;
 import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 
@@ -29,7 +30,7 @@ public class ShowTestServlet extends HttpServlet {
 			
 			DiagnosticCenter center = userService.getDiagnosticCenter(centerName);
 			
-			List<String> testList = userService.getTestsList(center.getCenterId());
+			List<Test> testList = userService.getTestsList(center.getCenterId());
 			request.setAttribute("testList", testList);
 			request.getRequestDispatcher("showTest.jsp").include(request,response);
 		}

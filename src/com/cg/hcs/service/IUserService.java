@@ -13,7 +13,7 @@ import com.cg.hcs.entity.Users;
 public interface IUserService {
 	
 	
-	String makeAppointment(Appointment appointment);
+	int makeAppointment(Appointment appointment);
 	
 	public String register(Users user);
 	
@@ -21,9 +21,9 @@ public interface IUserService {
 	
 	public String getRoleCode(String userId);
 
-	public List<String> getDiagnosticCentersList();
+	public List<DiagnosticCenter> getDiagnosticCentersList();
 	
-	List<String> getTestsList(String centerId);
+	List<Test> getTestsList(String centerId);
 	
 	public Users getUser(String userId);
 	 

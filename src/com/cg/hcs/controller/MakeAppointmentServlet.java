@@ -53,9 +53,9 @@ public class MakeAppointmentServlet extends HttpServlet {
 			appointment.setTest(test);
 			appointment.setUser(user);
 			
-			String makeAppointment = userService.makeAppointment(appointment);
+			int makeAppointment = userService.makeAppointment(appointment);
 			
-			if(makeAppointment.equals("success")) {
+			if(makeAppointment!=0) {
 				//Display a message that user has Booked appointment succefully
 				dispatcher = request.getRequestDispatcher("MakeAppointment.jsp");
 				dispatcher.forward(request, response);

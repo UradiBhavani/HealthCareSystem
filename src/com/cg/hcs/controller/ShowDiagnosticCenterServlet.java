@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.cg.hcs.dao.IUserDAO;
 import com.cg.hcs.dao.UserDAOImpl;
+import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.service.IUserService;
 import com.cg.hcs.service.UserServiceImpl;
 
@@ -25,7 +26,7 @@ public class ShowDiagnosticCenterServlet extends HttpServlet {
 		IUserService userService = new UserServiceImpl();
 		
 		try{
-			List<String> centersList = userService.getDiagnosticCentersList();
+			List<DiagnosticCenter> centersList = userService.getDiagnosticCentersList();
 			request.setAttribute("centersList", centersList);
 			/*List<String> testList = userService.getTestList();
 			request.setAttribute("testList", testList);*/
