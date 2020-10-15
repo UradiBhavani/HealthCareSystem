@@ -199,11 +199,11 @@ public class UserServiceImpl implements IUserService{
 	 * 
 	 ***********************************/
 	@Override
-	public Test getTest(String testName,String centerName) 
+	public Test getTest(String testId) 
 	{
 		try 
 		{
-			return userDaoInterface.getTest(testName, centerName);
+			return userDaoInterface.getTest(testId);
 		}
 		catch (HCSException e) 
 		{
@@ -248,11 +248,11 @@ public class UserServiceImpl implements IUserService{
 	 * 
 	 ***********************************/
 	@Override
-	public List<Appointment> getAppointmentStatus(String userId)
+	public List<Appointment> getAppointmentStatus(Users user)
 	{
 		try
 		{
-			return userDaoInterface.getAppointmentStatus(userId);
+			return userDaoInterface.getAppointmentStatus(user);
 		} 
 		catch (HCSException e) 
 		{	

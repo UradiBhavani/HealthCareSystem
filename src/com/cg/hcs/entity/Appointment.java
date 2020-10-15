@@ -17,36 +17,22 @@ import org.hibernate.annotations.Parameter;
 
 import com.cg.hcs.utility.StringSequenceIdGenerator;
 
-/***************************************
- * 
- * Description : HealthCareSystem Appointment class
- * @author : Yashaswini
- * @Date : 12/10/2020
- * 
- ***************************************/
 
 @Entity
 @Table(
 		uniqueConstraints= 
 		{@UniqueConstraint (columnNames={"appDate","testId"}),
-		 @UniqueConstraint (columnNames={"appDate","testId"})
+		 @UniqueConstraint (columnNames={"appDate","userId"})
 		}
 		
 		)
 public class Appointment 
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "center_seq")
-    @GenericGenerator(
-        name = "center_seq", 
-        strategy = "com.cg.hcs.utility.StringSequenceIdGenerator", 
-        parameters = {
-            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
-            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = ""),
-            @Parameter(name = StringSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int appId;
 	private String appDate;
-	private char isApproved;
+	private char appStatus;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="testId", referencedColumnName="testId")
@@ -68,7 +54,7 @@ public class Appointment
 	public Appointment(String appDate, char isApproved, Test test, Users user) {
 		super();
 		this.appDate = appDate;
-		this.isApproved = isApproved;
+		this.appStatus = isApproved;
 		this.test = test;
 		this.user = user;
 	}
@@ -78,7 +64,7 @@ public class Appointment
 		super();
 		this.appId = appId;
 		this.appDate = appDate;
-		this.isApproved = isApproved;
+		this.appStatus = isApproved;
 		this.test = test;
 		this.user = user;
 	}
@@ -108,11 +94,11 @@ public class Appointment
 
 
 	public char isApproved() {
-		return isApproved;
+		return appStatus;
 	}
 
 	public void setApproved(char approved) {
-		this.isApproved = approved;
+		this.appStatus = approved;
 	}
 	public Users getUser() {
 		return user;
@@ -161,19 +147,19 @@ public class Appointment
 
 
 	public char getIsApproved() {
-		return isApproved;
+		return appStatus;
 	}
 
 
 	public void setIsApproved(char isApproved) {
-		this.isApproved = isApproved;
+		this.appStatus = isApproved;
 	}
 
 
 	@Override
 	public String toString() {
 		return "Appointment [appointmentId=" + appId + ", appointmentDateTime=" + appDate
-				+ ", isApproved=" + isApproved + ", test=" + test + ", user=" + user + "]";
+				+ ", isApproved=" + appStatus + "]";
 	}
 	
 	

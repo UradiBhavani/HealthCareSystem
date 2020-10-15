@@ -11,13 +11,13 @@ public class QueryConstants {
 	
 	//User Queries
 	
-	public static final String GET_DIAGNOSTICCENTER_lIST = "select * from DiagnosticCenter c";
+	public static final String GET_DIAGNOSTICCENTER_LIST = "select c from DiagnosticCenter c";
 	
-	public static final String GET_TEST_LIST = "SELECT t FROM Test t where t.center = ?";
+	public static final String GET_TEST_LIST = "SELECT t FROM Test t where t.center.centerId = :centerId";
 	
-	public static final String GET_TEST = "SELECT t from Test t where t.testName = ? and t.center = ?";
+	public static final String GET_TEST = "SELECT t from Test t where t.testId = ?";
 	
-	public static final String GET_APPOINTMENT_STATUS = "Select a from Appointment a where a.user = ?";
+	public static final String GET_APPOINTMENT_STATUS = "Select a from Appointment a where a.user = :user";
 	
 	//Admin Queries
 	

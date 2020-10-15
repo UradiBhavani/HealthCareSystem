@@ -2,6 +2,7 @@ package com.cg.hcs.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,14 +18,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 
-/***************************************
- * 
- * Description : HealthCareSystem DiagnosticCenter class
- * @author : Alok Pattanaik
- * @Date : 12/10/2020
- * 
- ***************************************/
-
 @Entity
 public class DiagnosticCenter 
 {
@@ -34,16 +27,18 @@ public class DiagnosticCenter
         name = "center_seq", 
         strategy = "com.cg.hcs.utility.StringSequenceIdGenerator", 
         parameters = {
-            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
-            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "C_"),
+            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "C"),
             @Parameter(name = StringSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })
 	@Column(name = "center_id")
 	private String centerId;
 	private String centerName;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Test> listOfTests;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Appointment> listOfApps;
+	private String location;
+	private Long contactNo;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	private List<Test> listOfTests = new ArrayList<Test>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	private List<Appointment> listOfApps = new ArrayList<Appointment>();
 	
 	
 	
@@ -98,7 +93,29 @@ public class DiagnosticCenter
 	public void setListOfApps(List<Appointment> listOfApps) {
 		this.listOfApps = listOfApps;
 	}
-	
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Long getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(Long contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	@Override
+	public String toString() {
+		return "DiagnosticCenter [centerId=" + centerId + ", centerName=" + centerName + ", location=" + location
+				+ ", contactNo=" + contactNo + ", listOfTests=" + listOfTests + ", listOfApps=" + listOfApps + "]";
+	}
+
 	
 	
 	

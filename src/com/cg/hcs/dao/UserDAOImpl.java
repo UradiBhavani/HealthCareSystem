@@ -1,19 +1,19 @@
 package com.cg.hcs.dao;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
+import org.apache.log4j.Logger;
 
 import com.cg.hcs.entity.Users;
 import com.cg.hcs.exception.HCSException;
 import com.cg.hcs.queryconstants.QueryConstants;
 import com.cg.hcs.utility.JpaUtility;
-
-
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,16 +32,19 @@ import com.cg.hcs.utility.JpaUtility;
 /***************************************
  * 
  * Description : HealthCareSystem DAO Implementation
+ * 
  * @author : Reshma, Yashaswini, Bhavani
  * @Date : 12/10/2020
  * 
  ***************************************/
 
-public class UserDAOImpl implements IUserDAO{
-	
+public class UserDAOImpl implements IUserDAO {
+
 	static final EntityManagerFactory factory = JpaUtility.getFactory();
 	EntityManager manager = null;
 	EntityTransaction transaction = null;
+
+	static final Logger LOGGER = Logger.getLogger(UserDAOImpl.class);
 	
 	/***********************************
 	 * 
@@ -54,30 +57,28 @@ public class UserDAOImpl implements IUserDAO{
 	 ***********************************/
 
 	@Override
-	public String register(Users user) throws HCSException 
-	{
+	public String register(Users user) throws HCSException {
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
 		transaction.begin();
-				
-		try
-		{
+
+		try {
+			LOGGER.info("Inside User registration Method");
+			
 			manager.persist(user);
 			transaction.commit();
-		}
-		catch (PersistenceException e)
-		{
-			if(transaction.isActive())
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while registering the user");
+			
+			if (transaction.isActive())
 				transaction.rollback();
 			throw new HCSException("Error while registering the new user");
-		}
-		finally 
-		{
+		} finally {
 			manager.close();
 		}
 		return user.getUserId();
 	}
-	
+
 	/***********************************
 	 * 
 	 * @Description : Method to retrive the RoleCode
@@ -88,31 +89,22 @@ public class UserDAOImpl implements IUserDAO{
 	 * @Exception : HCSException
 	 * 
 	 ***********************************/
-	
+
 	@Override
-	public String getRoleCode(String userId) throws HCSException 
-	{
-	
+	public String getRoleCode(String userId) throws HCSException {
+
 		manager = factory.createEntityManager();
 		Users user = null;
 
-		
-		try 
-		{
+		try {
 			user = manager.find(Users.class, userId);
-		} 
-		catch (PersistenceException e) 
-		{
+		} catch (PersistenceException e) {
 			throw new HCSException("Error while retreiving the role code");
-		}
-		finally 
-		{	
+		} finally {
 			manager.close();
 		}
 		return user.getUserRole();
 	}
-
-
 
 	/***********************************
 	 * 
@@ -124,70 +116,68 @@ public class UserDAOImpl implements IUserDAO{
 	 * @Exception : HCSException
 	 ***********************************/
 	@Override
-	public boolean validateUser(String userId, String password) throws HCSException 
-	{
-	
+	public boolean validateUser(String userId, String password) throws HCSException {
+
 		manager = factory.createEntityManager();
 		Users user = null;
-		
+
 		try {
-				System.out.println(userId+" "+password);
-				user = manager.find(Users.class, userId);
-				System.out.println(user);
-				if(user.getUserPassword().equals(password))
-					return true;
-				else
-					return false;
-		} 
-		catch (PersistenceException e)
-		{
+			LOGGER.info("Inside validate user method.");
+			
+			user = manager.find(Users.class, userId);
+			if (user.getUserPassword().equals(password))
+				return true;
+			else
+				return false;
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while validating the user");
+			
 			throw new HCSException("Error while validating user");
-		}
-		finally 
-		{
+		} finally {
 			manager.close();
 		}
-		
+
 	}
-	
 
 	/***********************************
 	 * 
 	 * @Description : Method to retrive the centers list
 	 * @Author : Bhavani
 	 *
-	 *	No arguments
+	 *         No arguments
 	 * 
 	 * @returns: List<DiagnosticCenter>
 	 * @Exception : HCSException
 	 ***********************************/
 	@Override
-	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException 
-	{
-		
+	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException {
+
 		manager = factory.createEntityManager();
 		List<DiagnosticCenter> centersList = null;
-		try
-		{
-			TypedQuery<DiagnosticCenter> query = manager.createQuery(QueryConstants.GET_DIAGNOSTICCENTER_lIST,DiagnosticCenter.class);
+		try {
+			LOGGER.info("Inside get diagnostic center list method.");
+			
+			TypedQuery<DiagnosticCenter> query = manager.createQuery(QueryConstants.GET_DIAGNOSTICCENTER_LIST,
+					DiagnosticCenter.class);
 			centersList = query.getResultList();
-		}
-		catch (PersistenceException e) 
-		{
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while fetching the diagnostic centers list");
+			
 			throw new HCSException("Error while fetching centers List");
-		}
-		finally 
-		{
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
 			manager.close();
 		}
-	
+
 		return centersList;
 	}
-	
-	
+
 	/***********************************
 	 * 
-	 * @Description : Method to retrive the Tests list under a particular DiagnosticCenter
+	 * @Description : Method to retrive the Tests list under a particular
+	 *              DiagnosticCenter
 	 * @Author : Bhavani
 	 * @arg1 : String
 	 * 
@@ -195,29 +185,26 @@ public class UserDAOImpl implements IUserDAO{
 	 * @Exception : HCSException
 	 ***********************************/
 	@Override
-	public List<Test> getTestsList(String centerId) throws HCSException 
-	{
-		
+	public List<Test> getTestsList(String centerId) throws HCSException {
+
 		manager = factory.createEntityManager();
-		
+
 		List<Test> testsList = null;
-		try
-		{
-			TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_TEST_LIST, Test.class); 
-			query.setParameter(1, centerId);
+		try {
+			LOGGER.info("Inside get test list method.");
+			
+			TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_TEST_LIST, Test.class);
+			query.setParameter("centerId", centerId);
 			testsList = query.getResultList();
-		}
-		catch (PersistenceException e) 
-		{
-			throw new HCSException("Cannot retrieve test list from center "+centerId);
-		}
-		finally
-		{
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while retriving the tests list.");
+			
+			throw new HCSException("Cannot retrieve test list from center " + centerId);
+		} finally {
 			manager.close();
 		}
 		return testsList;
 	}
-
 
 	/***********************************
 	 * 
@@ -229,15 +216,15 @@ public class UserDAOImpl implements IUserDAO{
 	 * @Exception : HCSException
 	 ***********************************/
 	@Override
-	public int makeAppointment(Appointment appointment) //throws HCSException 
+	public int makeAppointment(Appointment appointment)  throws HCSException
 	{
-		
+
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
-		
-		
-		try 
-		{
+
+		try {
+			LOGGER.info("Inside make appointment method.");			
+			
 			transaction.begin();
 			Users user = manager.find(Users.class, appointment.getUser().getUserId());
 			Test test = manager.find(Test.class, appointment.getTest().getTestId());
@@ -248,22 +235,18 @@ public class UserDAOImpl implements IUserDAO{
 			manager.persist(appointment);
 			transaction.commit();
 			return appointment.getAppId();
-		} 
-		catch (PersistenceException e)
-		{
-			if(transaction.isActive())
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while booking appointment for patient.");
+			
+			if (transaction.isActive())
 				transaction.rollback();
-//			throw new HCSException("Error while making appointment" + e.getMessage());
-			e.printStackTrace();
-		}
-		finally 
-		{
+			throw new HCSException("Error while making appointment" +e.getMessage());
+			
+		} finally {
 			manager.close();
 		}
-		return 0;
-		
-	}
 
+	}
 
 	/***********************************
 	 * 
@@ -276,35 +259,30 @@ public class UserDAOImpl implements IUserDAO{
 	 * 
 	 ***********************************/
 	@Override
-	public Users getUser(String userId) throws HCSException 
-	{
-		
+	public Users getUser(String userId) throws HCSException {
+
 		manager = factory.createEntityManager();
 		transaction = manager.getTransaction();
 
 		Users user = null;
-		
-		try
-		{
+
+		try {
+			LOGGER.info("Inide get user method.");
+			
 			transaction.begin();
-			user = manager.find(Users.class,userId);
+			user = manager.find(Users.class, userId);
 			transaction.commit();
 			return user;
-		} 
-		catch (RuntimeException e) 
-		{
-			if(transaction.isActive())
+		} catch (RuntimeException e) {
+			LOGGER.info("Error while retriving the user details.");
+			if (transaction.isActive())
 				transaction.rollback();
 			throw new HCSException("Error while retreiving user");
-		}
-		finally
-		{
+		} finally {
 			manager.close();
 		}
-		
+
 	}
-
-
 
 	/***********************************
 	 * 
@@ -317,26 +295,22 @@ public class UserDAOImpl implements IUserDAO{
 	 * 
 	 ***********************************/
 	@Override
-	public Test getTest(String testName,String centerId) throws HCSException 
-	{
-		
-		
+	public Test getTest(String testId) throws HCSException {
+
 		manager = factory.createEntityManager();
-		try
-		{
-			TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_TEST, Test.class); 
-			query.setParameter(1,testName);
-			query.setParameter(2, centerId);
-			Test test = query.getSingleResult();
+		try {
+			LOGGER.info("Inside get test method.");
+			System.out.println("Inside get test method"+testId);
+			
+			Test test = manager.find(Test.class, testId);
 			return test;
-		}
-		catch (PersistenceException e)
-		{
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while retriving the test deatils under a particular center.");
+			
 			throw new HCSException("Error while getting test");
 		}
-		
-	}
 
+	}
 
 	/***********************************
 	 * 
@@ -350,26 +324,23 @@ public class UserDAOImpl implements IUserDAO{
 	 ***********************************/
 	@Override
 	public DiagnosticCenter getDiagnosticCenter(String centerId) throws HCSException {
-		
+
 		manager = factory.createEntityManager();
 		DiagnosticCenter center = null;
-		try
-		{
+		try {
+			LOGGER.info("Inside get diagnostic center method.");
+			
 			center = manager.find(DiagnosticCenter.class, centerId);
 			return center;
-		}
-		catch(PersistenceException e)
-		{
-			throw new HCSException("Error while retrieving center with id "+centerId);
-		}
-		finally
-		{
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while retriving the details of diagnostic center.");
+			
+			throw new HCSException("Error while retrieving center with id " + centerId);
+		} finally {
 			manager.close();
 		}
-		
+
 	}
-
-
 
 	/***********************************
 	 * 
@@ -381,29 +352,27 @@ public class UserDAOImpl implements IUserDAO{
 	 * @Exception : HCSException
 	 * 
 	 ***********************************/
+	@Transactional
 	@Override
-	public List<Appointment> getAppointmentStatus(String userId) throws HCSException 
-	{
-		
+	public List<Appointment> getAppointmentStatus(Users user) throws HCSException {
+
 		manager = factory.createEntityManager();
 		List<Appointment> appointmentList = null;
-		try
-		{
-			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_APPOINTMENT_STATUS, Appointment.class);
-			query.setParameter(1, userId);
+		try {
+			LOGGER.info("Inside get appointment status method.");
+			
+			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_APPOINTMENT_STATUS,
+					Appointment.class);
+			query.setParameter("user", user);
 			appointmentList = query.getResultList();
 			return appointmentList;
-		}
-		catch (PersistenceException e) 
-		{
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while fetching the status of appointment by customer.");
 			throw new HCSException("Error while retrieving all appointments");
-		}
-		finally
-		{
+		} finally {
 			manager.close();
 		}
 	}
-
 
 	/***********************************
 	 * 
@@ -416,17 +385,15 @@ public class UserDAOImpl implements IUserDAO{
 	 * 
 	 ***********************************/
 	@Override
-	public String getApplicationId(String userId) 
-	{
-		
+	public String getApplicationId(String userId) {
+
 		manager = factory.createEntityManager();
-		
-//		Query query = manager.createQuery("select appId from Appointment a where a.userId=:userId");
-//		query.setParameter("userId", userId);
-//		//String appId = (String)query.getUniqueResult("appId");
+
+		// Query query = manager.createQuery("select appId from Appointment a
+		// where a.userId=:userId");
+		// query.setParameter("userId", userId);
+		// //String appId = (String)query.getUniqueResult("appId");
 		return null;
 	}
-		
-	
-}
 
+}

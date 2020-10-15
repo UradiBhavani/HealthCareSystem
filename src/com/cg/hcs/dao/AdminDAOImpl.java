@@ -9,6 +9,8 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.Logger;
+
 import com.cg.hcs.entity.Appointment;
 import com.cg.hcs.entity.DiagnosticCenter;
 import com.cg.hcs.entity.Test;
@@ -35,6 +37,7 @@ import com.cg.hcs.utility.JpaUtility;
 public class AdminDAOImpl implements IAdminDAO
 {
 	static final EntityManagerFactory factory = JpaUtility.getFactory();
+	static final Logger LOGGER = Logger.getLogger(AdminDAOImpl.class);
 	
 	/***********************************
 	 * 
@@ -53,6 +56,8 @@ public class AdminDAOImpl implements IAdminDAO
 		EntityTransaction transaction = manager.getTransaction();
 		try
 		{
+			LOGGER.info("Inside User registration Method");
+			
 			transaction.begin();
 			manager.persist(center);
 			transaction.commit();
@@ -60,6 +65,8 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e)
 		{
+			LOGGER.info("Error while adding a center.");
+			
 			if(transaction.isActive())
 				transaction.rollback();
 			throw new HCSException("Error while commiting the transaction"+ e.getMessage());
@@ -94,16 +101,15 @@ public class AdminDAOImpl implements IAdminDAO
 		
 		try
 		{
+			LOGGER.info("Inside delete center method.");
+			
 			transaction.begin();
 			DiagnosticCenter centerFetched = manager.find(DiagnosticCenter.class, center.getCenterId());
 			if(centerFetched == null)
 				return false;
 			transaction2.begin();
-			//manager2.createQuery(QueryConstants.GET_DELETE_STATUS).executeUpdate();
 			Query query = manager2.createQuery(QueryConstants.GET_DELETE_STATUS);
 			query.setParameter(1, centerFetched.getCenterId());
-//			manager.remove(centerFetched.getListOfApps());
-//			manager.remove(centerFetched.getListOfTests());
 			transaction2.commit();
 			manager.remove(centerFetched);
 			transaction.commit();
@@ -112,6 +118,7 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e) 
 		{
+			LOGGER.info("Error while removing a center.");
 			throw new HCSException("Error while removing the center" + e.getMessage());
 		}
 		finally
@@ -139,6 +146,8 @@ public class AdminDAOImpl implements IAdminDAO
 		EntityTransaction transaction = manager.getTransaction();
 		try
 		{
+			LOGGER.info("Inside add test method.");
+			
 			transaction.begin();
 			DiagnosticCenter center = test.getCenter();
 			DiagnosticCenter centerFetched = manager.find(DiagnosticCenter.class, center.getCenterId());
@@ -148,6 +157,8 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e)
 		{
+			LOGGER.info("Error while adding test under a particular center.");
+			
 			if(transaction.isActive())
 				transaction.rollback();
 			e.printStackTrace();
@@ -178,6 +189,8 @@ public class AdminDAOImpl implements IAdminDAO
 		EntityTransaction transaction = manager.getTransaction();
 		try
 		{
+			LOGGER.info("Inside remove test method.");
+			
 			transaction.begin();
 			Test testFetched = manager.find(Test.class, test.getTestId());
 			manager.remove(testFetched);
@@ -186,6 +199,8 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e) 
 		{
+			LOGGER.info("Error while removing the test under a particular center.");
+			
 			throw new HCSException("Error while removing test"+e.getMessage());
 		}
 		finally
@@ -212,6 +227,8 @@ public class AdminDAOImpl implements IAdminDAO
 		EntityTransaction transaction = manager.getTransaction();
 		try
 		{
+			LOGGER.info("Inside approve appointment method");
+			
 			transaction.begin();
 			Appointment appointmentFetched = manager.find(Appointment.class, appointment.getAppId());
 			appointmentFetched.setIsApproved(appStatus);
@@ -221,6 +238,8 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e)
 		{
+			LOGGER.info("error while trying to approve the status of appointment.");
+			
 			if(transaction.isActive())
 				transaction.rollback();
 			throw new HCSException("Cannot find appointment"+ e.getMessage());
@@ -248,7 +267,7 @@ public class AdminDAOImpl implements IAdminDAO
 	{
 		EntityManager manager = factory.createEntityManager();
 		Test test = new Test(null, null, center);
-	TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_ALL_TESTS,Test.class);
+		TypedQuery<Test> query = manager.createQuery(QueryConstants.GET_ALL_TESTS,Test.class);
 	    query.setParameter(1, test.getCenter().getCenterId());
 		List<Test> listOfTests = query.getResultList();
 		System.out.println(listOfTests);
@@ -270,6 +289,8 @@ public class AdminDAOImpl implements IAdminDAO
 		EntityManager manager = factory.createEntityManager();
 		try
 		{
+			LOGGER.info("Error while fetching all the pending appointments under a center");
+			
 			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_ALL_PENDING_APPOINTMENT_BY_CENTER,Appointment.class);
 			query.setParameter(1,center.getCenterId());
 			query.setParameter(2,'P');
@@ -278,6 +299,8 @@ public class AdminDAOImpl implements IAdminDAO
 		}
 		catch (PersistenceException e) 
 		{
+			LOGGER.info("Error while fetching all the pending appointments under a center");
+			
 			throw new HCSException("Error while retreiving all appointments"+ e.getMessage());
 		}
 		finally

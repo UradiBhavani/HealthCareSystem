@@ -25,25 +25,24 @@ import com.cg.hcs.service.UserServiceImpl;
  **********************************/
 @WebServlet("/ShowDiagnosticCenterServlet")
 public class ShowDiagnosticCenterServlet extends HttpServlet {
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		IUserDAO userDAO = new UserDAOImpl();
-		RequestDispatcher dispatcher= null;
+		RequestDispatcher dispatcher = null;
 		IUserService userService = new UserServiceImpl();
-		
-		try{
+
+		try {
 			List<DiagnosticCenter> centersList = userService.getDiagnosticCentersList();
+			System.out.println("After getting centerlist");
 			request.setAttribute("centersList", centersList);
-			/*List<String> testList = userService.getTestList();
-			request.setAttribute("testList", testList);*/
-			request.getRequestDispatcher("makeAppointment.jsp").forward(request, response);
+			request.getRequestDispatcher("showCenters.jsp").forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("In ShowDiagnosticCenter" + e.getMessage());
+
 		}
-		catch(Exception e) {
-			
-			System.out.println(e.getMessage());
-			
-		}
-		
+
 	}
 
 }

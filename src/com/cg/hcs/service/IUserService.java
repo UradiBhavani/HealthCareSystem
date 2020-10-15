@@ -27,11 +27,11 @@ public interface IUserService {
 	
 	public Users getUser(String userId);
 	 
-	public Test getTest(String testName,String centerName);
+	public Test getTest(String testId);
 	
-	public DiagnosticCenter getDiagnosticCenter(String centerName);
+	public DiagnosticCenter getDiagnosticCenter(String centerId);
 	
-	public List<Appointment> getAppointmentStatus(String userId);
+	public List<Appointment> getAppointmentStatus(Users user);
 
 	public List<String> getTestList();
 

@@ -1,6 +1,7 @@
 package com.cg.hcs.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Parameter;
 import com.cg.hcs.utility.StringSequenceIdGenerator;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,8 +35,8 @@ public class Users
         name = "user_seq", 
         strategy = "com.cg.hcs.utility.StringSequenceIdGenerator", 
         parameters = {
-            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
-            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "U_"),
+            @Parameter(name = StringSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+            @Parameter(name = StringSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "U"),
             @Parameter(name = StringSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d") })
 	//@Column(name = "user_id")
 	private String userId;
@@ -43,8 +45,8 @@ public class Users
 	private Long contactNo;
 	private String email;
 	private String userRole;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Appointment> appointmentList;
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	private List<Appointment> appointmentList = new ArrayList<Appointment>();
 	
 	
 	
@@ -130,11 +132,5 @@ public class Users
 		return "Users [userId=" + userId + ", userPassword=" + userPassword + ", userName=" + userName + ", contactNo="
 				+ contactNo + ", email=" + email + ", userRole=" + userRole + ", appointmentList=" + appointmentList
 				+ "]";
-	}
-	
-	
-	
-	
-	
-	
+	}	
 }

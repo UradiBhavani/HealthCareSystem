@@ -29,11 +29,11 @@ public interface IUserDAO {
 	
 	public Users getUser(String userId) throws HCSException;
 	 
-	public Test getTest(String testName,String centerName) throws HCSException;
+	public Test getTest(String testId) throws HCSException;
 	
-	public DiagnosticCenter getDiagnosticCenter(String centerName) throws HCSException;
+	public DiagnosticCenter getDiagnosticCenter(String centerId) throws HCSException;
 	
-	public List<Appointment> getAppointmentStatus(String userId) throws HCSException;
+	public List<Appointment> getAppointmentStatus(Users user) throws HCSException;
 	
 	public String getApplicationId(String userId);
 

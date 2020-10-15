@@ -99,6 +99,7 @@ public class UserTestCases {
 	@Test
 	public void testGetDiagnosticCenterList() {
 		IUserService userService = new UserServiceImpl();
+		
 		assertNotNull(userService.getDiagnosticCentersList());
 	}
 	

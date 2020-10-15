@@ -8,7 +8,7 @@ public class JpaUtility
 	private final static EntityManagerFactory factory;
 	static
 	{
-		factory = Persistence.createEntityManagerFactory("HCSystem");
+		factory = Persistence.createEntityManagerFactory("HealthCareSystem");
 	}
 	public static EntityManagerFactory getFactory()
 	{
