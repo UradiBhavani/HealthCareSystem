@@ -46,14 +46,6 @@ public class AdminServiceImpl implements IAdminService
 			System.out.println(e.getMessage());
 			return null;
 		}
-		
-	}
-
-	@Override
-
-	public List<DiagnosticCenter> viewAllCenters() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/***********************************
@@ -117,12 +109,12 @@ public class AdminServiceImpl implements IAdminService
 	 * 
 	 ***********************************/
 	@Override
-	public boolean removeTest(Test test) 
+	public boolean removeTest(String testId) 
 	{
 		IAdminDAO adminDAO = new AdminDAOImpl();
 		try 
 		{
-			return adminDAO.removeTest(test);
+			return adminDAO.removeTest(testId);
 		} 
 		catch (HCSException e) 
 		{
@@ -133,7 +125,7 @@ public class AdminServiceImpl implements IAdminService
 
 	/***********************************
 	 * 
-	 * @Description : Method to approve the Appointment
+	 * @Description : Method to approve and reject the Appointment
 	 * @Author : Yashaswini
 	 * @arg1 : Appointment, char
 	 * 
@@ -142,12 +134,12 @@ public class AdminServiceImpl implements IAdminService
 	 * 
 	 ***********************************/
 	@Override
-	public boolean approveAppointment(Appointment appointment,char appStatus) 
+	public boolean approveRejectAppointment(int appId, char appStatus) 
 	{
 		IAdminDAO adminDAO = new AdminDAOImpl();
 		try 
 		{
-			return adminDAO.approveAppointment(appointment, appStatus);
+			return adminDAO.approveRejectAppointment(appId, appStatus);
 		}
 		catch (HCSException e) 
 		{
@@ -158,7 +150,7 @@ public class AdminServiceImpl implements IAdminService
 	
 	/***********************************
 	 * 
-	 * @Description : Methods to view all pending appointments under a center
+	 * @Description : Methods to view all appointments under a center
 	 * @Author : Yashaswini
 	 * @arg1 : DiagnosticCenter
 	 * 
@@ -166,12 +158,12 @@ public class AdminServiceImpl implements IAdminService
 	 * @Exception : HCSException
 	 ***********************************/
 	@Override
-	public List<Appointment> viewAllPendingAppointmentByCenter(DiagnosticCenter center)
+	public List<Appointment> viewAllAppointmentsByCenter(String centerId)
 	{
 		IAdminDAO adminDAO = new AdminDAOImpl();
 		try 
 		{
-			return adminDAO.viewAllPendingAppointmentByCenter(center);
+			return adminDAO.viewAllAppointmentsByCenter(centerId);
 		}
 		catch (HCSException e) 
 		{
@@ -179,4 +171,58 @@ public class AdminServiceImpl implements IAdminService
 		}
 		return null;
 	}
+
+	/***********************************
+	 * 
+	 * @Description : Method to view all Tests
+	 * @Author : Pratik Prakash
+	 * @arg1 : centerId
+	 * 
+	 * @returns: String
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
+
+
+	@Override
+	public List<Test> viewAllTest(String centerId) 
+	{
+		IAdminDAO adminDAO = new AdminDAOImpl();
+		try 
+		{
+			return adminDAO.viewAllTest(centerId);
+		}
+		catch (HCSException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	
+	/***********************************
+	 * 
+	 * @Description : Method to view all Centers
+	 * @Author : Alok Pattanaik
+	 * No Arguments
+	 * 
+	 * @Exception : HCSException
+	 * 
+	 ***********************************/
+	
+	@Override
+
+	public List<DiagnosticCenter> viewAllCenters()
+	{
+		IAdminDAO adminDAO = new AdminDAOImpl();
+		try 
+		{
+			return adminDAO.viewAllCenters();
+		}
+		catch (HCSException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	  
 }

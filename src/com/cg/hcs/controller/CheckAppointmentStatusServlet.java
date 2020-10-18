@@ -40,10 +40,8 @@ public class CheckAppointmentStatusServlet extends HttpServlet {
 			LOGGER.info("Inside Check appointment status servlet.");
 
 			HttpSession session = request.getSession();
-			System.out.println("Before getting session attribute");
 			String userId = (String) session.getAttribute("userId");
-			Users user = userService.getUser(userId);
-			System.out.println(user);
+			Users user = new Users(userId);
 			List<Appointment> appointmentList = userService.getAppointmentStatus(user);
 
 			request.setAttribute("appointmentList", appointmentList);

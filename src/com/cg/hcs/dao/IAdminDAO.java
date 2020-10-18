@@ -15,14 +15,16 @@ public interface IAdminDAO
 	
 	public boolean deleteCenter(DiagnosticCenter center) throws HCSException;
 	
-	String addTest(Test test) throws HCSException;
+	public String addTest(Test test) throws HCSException;
 	
-	public List<Test> viewAllTest(DiagnosticCenter center);
+	boolean removeTest(String testId) throws HCSException;
 
-	boolean removeTest(Test test) throws HCSException;
-	
-	public List<Appointment> viewAllPendingAppointmentByCenter(DiagnosticCenter center) throws HCSException;
+	boolean approveRejectAppointment(int appId, char appStatus) throws HCSException;
 
-	boolean approveAppointment(Appointment appointment, char appStatus) throws HCSException;
+	public List<Test> viewAllTest(String centerId) throws HCSException;
+
+	public List<Appointment> viewAllAppointmentsByCenter(String centerId) throws HCSException;
+
+	public List<DiagnosticCenter> viewAllCenters() throws HCSException;
 	
 }

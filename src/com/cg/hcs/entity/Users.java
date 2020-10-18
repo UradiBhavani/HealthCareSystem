@@ -45,7 +45,7 @@ public class Users
 	private Long contactNo;
 	private String email;
 	private String userRole;
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
 	private List<Appointment> appointmentList = new ArrayList<Appointment>();
 	
 	
@@ -85,6 +85,14 @@ public class Users
 	}
 	
 	
+	public Users(String userId, String userName, Long contactNo, String email) {
+		this.userId = userId;
+		this.userName = userName;
+		this.contactNo = contactNo;
+		this.email = email;
+	}
+
+
 	public String getUserId() {
 		return userId;
 	}
@@ -130,7 +138,6 @@ public class Users
 	@Override
 	public String toString() {
 		return "Users [userId=" + userId + ", userPassword=" + userPassword + ", userName=" + userName + ", contactNo="
-				+ contactNo + ", email=" + email + ", userRole=" + userRole + ", appointmentList=" + appointmentList
-				+ "]";
+				+ contactNo + ", email=" + email + ", userRole=" + userRole + "]";
 	}	
 }

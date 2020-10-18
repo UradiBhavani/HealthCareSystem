@@ -45,32 +45,20 @@ public class MakeAppointmentServlet extends HttpServlet {
 		try {
 
 			System.out.println("in try " + session.getAttribute("userId"));
-			Users user = userService.getUser((String) session.getAttribute("userId"));
-			System.out.println("After user : " + user);
-			Test test = userService.getTest(request.getParameter("testObj"));
-			System.out.println("After test : " + test);
-			System.out.println("before diagnosticcenter " + (String) session.getAttribute("centerId"));
-			DiagnosticCenter diagnosticCenter = userService
-					.getDiagnosticCenter((String) session.getAttribute("centerId"));
-			System.out.println("After center : " + diagnosticCenter);
+			String userId = (String)session.getAttribute("userId");
+			Users user = new Users(userId);
+			Test test = new Test(request.getParameter("testObj"));
 			String appDateTime = request.getParameter("date") + request.getParameter("time");
 
 			System.out.println(appDateTime);
 
-			Appointment appointment = new Appointment();
-
-			appointment.setAppDate(appDateTime);
-			appointment.setIsApproved('P');
-			appointment.setCenter(diagnosticCenter);
-			appointment.setTest(test);
-			appointment.setUser(user);
+			Appointment appointment = new Appointment(appDateTime, 'P', test, user);
 			System.out.println(appointment);
 			int makeAppointment = userService.makeAppointment(appointment);
 
 			if (makeAppointment != 0) {
-				// Display a message that user has Booked appointment
-				// successfully
-				dispatcher = request.getRequestDispatcher("success.jsp");
+				request.setAttribute("successMessage", "Appointment booked successfully!!");
+				dispatcher = request.getRequestDispatcher("UserHomePage.jsp");
 				dispatcher.forward(request, response);
 			}
 

@@ -33,11 +33,11 @@ public class DiagnosticCenter
 	@Column(name = "center_id")
 	private String centerId;
 	private String centerName;
-	private String location;
-	private Long contactNo;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	private String centerAddress;
+	private Long contactNumber;
+	@OneToMany(mappedBy = "center", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Test> listOfTests = new ArrayList<Test>();
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "center", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Appointment> listOfApps = new ArrayList<Appointment>();
 	
 	
@@ -51,10 +51,12 @@ public class DiagnosticCenter
 		this.centerId = centerId;
 	}
 	
-	public DiagnosticCenter(String centerName) 
+	public DiagnosticCenter(String centerName,String centerAddress,Long contactNumber) 
 	{
 		super();
 		this.centerName = centerName;
+		this.centerAddress = centerAddress;
+		this.contactNumber = contactNumber;
 		Test defaultTest1 = new Test("Blood Group",this);
 		Test defaultTest2 = new Test("Blood Sugar",this);
 		Test defaultTest3 = new Test("Blood Pressure",this);
@@ -94,26 +96,26 @@ public class DiagnosticCenter
 		this.listOfApps = listOfApps;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getCenterAddress() {
+		return centerAddress;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setCenterAddress(String centerAddress) {
+		this.centerAddress = centerAddress;
 	}
 
-	public Long getContactNo() {
-		return contactNo;
+	public Long getContactNumber() {
+		return contactNumber;
 	}
 
-	public void setContactNo(Long contactNo) {
-		this.contactNo = contactNo;
+	public void setContactNo(Long contactNumber) {
+		this.contactNumber = contactNumber;
 	}
 
 	@Override
 	public String toString() {
-		return "DiagnosticCenter [centerId=" + centerId + ", centerName=" + centerName + ", location=" + location
-				+ ", contactNo=" + contactNo + ", listOfTests=" + listOfTests + ", listOfApps=" + listOfApps + "]";
+		return "DiagnosticCenter [centerId=" + centerId + ", centerName=" + centerName + ", centerAddress=" + centerAddress
+				+ ", contactNumber=" + contactNumber +  "]";
 	}
 
 	

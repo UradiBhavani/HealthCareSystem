@@ -25,7 +25,7 @@ public interface IUserDAO {
 	
 	public List<DiagnosticCenter> getDiagnosticCentersList() throws HCSException;
 	
-	List<Test> getTestsList(String centerId) throws HCSException;
+	public List<Test> getTestsList(String centerId) throws HCSException;
 	
 	public Users getUser(String userId) throws HCSException;
 	 
@@ -35,6 +35,10 @@ public interface IUserDAO {
 	
 	public List<Appointment> getAppointmentStatus(Users user) throws HCSException;
 	
-	public String getApplicationId(String userId);
+	public List<DiagnosticCenter> getDiagnosticCentersListByLocation(String location) throws HCSException;
+
+	public boolean editProfile(Users user) throws HCSException;
+
+	public boolean changePassword(String userId, String password) throws HCSException;
 
 }

@@ -2,11 +2,11 @@
 @CHARSET "UTF-8";body {
     margin: 0;
 	padding:0;
-	//background:url(imagebackground.jpg);
+	background:url(images/login-registration.jpg); 
 	background-size:cover;
 	font-family:sans-serif;
 	}
-.box {
+.box {.
 	width:370px;
 	height:440px;
 	background:rgba(0.3, 0.3, 0.3, 0.3);
@@ -17,20 +17,13 @@
 	transform:translate(-50%,-50%);
 	box-sizing:border-box;
 	padding:70px 30px;
-	margin-top:1%;
+	margin-top:2%;
+	margin-left:1%;
 }
-.box1 {
-	width:400px;
-	height:370px;
-	background:rgba(0.3, 0.3, 0.3, 0.3);
-	color:#fff;
-	top:50%;
-	left:50%;
-	position:absolute;
-	transform:translate(-50%,-50%);
-	box-sizing:border-box;
-	padding:70px 30px;
-	margin-top:1%;
+.logo-image {
+	position: absolute;
+  	top: 8px;
+  	left: 30px;
 }
 .avatar {
 	width: 100px;
@@ -68,9 +61,9 @@ h1 {
 .box input[type="submit"] {
 	border:none;
 	outline:none;
-	height:50px;
+	height:40px;
 	left:50%;
-	width:100px;
+	width:80px;
 	background:#1c8adb;
 	color:#ggg;
 	font-size:18px;
@@ -100,16 +93,22 @@ h1 {
 .box a:hover {
 	color: #39dc79
 }
-.box1 p {
+
+.image{
+	margin-left-10%;
+	/* position:absolute; */
+}
+
+/* .centers p {
 	margin:0;
 	padding:0;
 	font-weight: bold;
 }
-.box1 input{
+.centers input{
 	width: 100%;
 	margin-bottom:20px;
 }
-.box1 input[type = "text"]
+.centers input[type = "text"]
 {
 	border:none;
 	border-bottom:1px solid #fff;
@@ -118,39 +117,39 @@ h1 {
 	height:30px;
 	color:#fff;
 	font-size:16px;
-}
-.box1 input[type="submit"] {
+} */
+/* .centers input[type="submit"] {
 	border:none;
 	outline:none;
 	height:50px;
 	left:50%;
-	width:100px;
+	width:80px;
 	background:#1c8adb;
 	color:#ggg;
 	font-size:18px;
 	border-radius:20px;
 }
 
-.box1 input[type="submit"]:hover {
+.centers input[type="submit"]:hover {
 	cursor:pointer;
 	background:#39dc79;
 	color:#000;
 }
-.box1 a{
+.centers a{
 	text-decoration:none;
 	font-size:14px;
 	color:#fff;
 }
-.box1 a:hover {
+.centers a:hover {
 	color: #39dc79
 }
-
+ */
 /* Welcome page css header and footer */
 
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700|Pacifico");
 		body {
 			font: 15px/1.5 Arial,Helvetica, sans-serif;
-			padding:0;
+			padding-right:2px;
 			margin:0;
 			background-color:#f4f4f4;
 		}
@@ -181,7 +180,8 @@ h1 {
 			position: absolute;
 			top: 0;
 			margin-top:1%;
-			margin-left:10%;
+			margin-left:1%;
+			/* margin-right:5%; */
 			color: #e5474b;
 			font-size: 1.7em;
 			text-transform: none;
@@ -240,10 +240,60 @@ h1 {
 		}
 		
 		footer {
-			padding:10px;
-			margin-top:37%;
-			color:#ffffff;
-			background-color:#e8491d;
-			text-align:center;
+			  position: fixed;
+			  left: 0;
+			  bottom: 0;
+			  width: 100%;
+			  color:#ffffff;
+			  background-color:#e8491d;
+			  text-align: center;
+
 			
 		}
+		
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+.dropdown-content {
+  display: none;
+  /* position: absolute; */
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1; 
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}

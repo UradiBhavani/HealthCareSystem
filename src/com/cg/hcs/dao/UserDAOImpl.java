@@ -123,8 +123,9 @@ public class UserDAOImpl implements IUserDAO {
 
 		try {
 			LOGGER.info("Inside validate user method.");
-			
+			System.out.println("In dao :"+userId+"---"+password);
 			user = manager.find(Users.class, userId);
+			System.out.println("In validate user : "+user);
 			if (user.getUserPassword().equals(password))
 				return true;
 			else
@@ -363,7 +364,7 @@ public class UserDAOImpl implements IUserDAO {
 			
 			TypedQuery<Appointment> query = manager.createQuery(QueryConstants.GET_APPOINTMENT_STATUS,
 					Appointment.class);
-			query.setParameter("user", user);
+			query.setParameter("user", user.getUserId());
 			appointmentList = query.getResultList();
 			return appointmentList;
 		} catch (PersistenceException e) {
@@ -374,26 +375,85 @@ public class UserDAOImpl implements IUserDAO {
 		}
 	}
 
-	/***********************************
-	 * 
-	 * @Description : Method to retrieve the applicationId using userId
-	 * @Author : Reshma
-	 * @arg1 : String
-	 * 
-	 * @returns: String
-	 * @Exception : HCSException
-	 * 
-	 ***********************************/
+
 	@Override
-	public String getApplicationId(String userId) {
-
+	public List<DiagnosticCenter> getDiagnosticCentersListByLocation(String centerAddress) throws HCSException {
 		manager = factory.createEntityManager();
+		List<DiagnosticCenter> centersList = null;
+		try {
+			LOGGER.info("Inside get diagnostic center list by location  method.");
+			
+			TypedQuery<DiagnosticCenter> query = manager.createQuery(QueryConstants.GET_DIAGNOSTICCENTER_LIST_BY_LOCATION,
+					DiagnosticCenter.class);
+			query.setParameter("centerAddress", centerAddress);
+			centersList = query.getResultList();
+		} catch (PersistenceException e) {
+			LOGGER.info("Error while fetching the diagnostic centers list by location ");
+			
+			throw new HCSException("Error while fetching centers List by location");
+		} finally {
+			manager.close();
+		}
 
-		// Query query = manager.createQuery("select appId from Appointment a
-		// where a.userId=:userId");
-		// query.setParameter("userId", userId);
-		// //String appId = (String)query.getUniqueResult("appId");
-		return null;
+		return centersList;
+	}
+
+	@Override
+	public boolean editProfile(Users user) throws HCSException {
+		manager = factory.createEntityManager();
+		transaction = manager.getTransaction();
+		try {
+			LOGGER.info("Inside edit profile method.");
+			
+			/*Query query = manager.createQuery(QueryConstants.EDIT_PROFILE,
+					Users.class);
+			query.setParameter("username", user.getUserName());
+			query.setParameter("contactNo", user.getContactNo());
+			query.setParameter("email", user.getEmail());
+			query.setParameter("userId",user.getUserId());
+			if(query.executeQuery()==1){
+				return true;
+			}*/
+			transaction.begin();
+			Users usr = manager.find(Users.class, user.getUserId());
+			usr.setUserName(user.getUserName());
+			usr.setContactNo(user.getContactNo());
+			usr.setEmail(user.getEmail());
+			manager.persist(usr);
+			transaction.commit();
+			return true;
+		}catch (PersistenceException e) {
+			LOGGER.info("Error while editing profile");	
+			throw new HCSException("Error while editing profile");
+		}  finally {
+			manager.close();
+		}
+		
+	}
+
+	@Override
+	public boolean changePassword(String userId, String password) throws HCSException {
+		manager = factory.createEntityManager();
+		transaction = manager.getTransaction();
+		Users user = null;
+
+		try {
+			LOGGER.info("Inidechange password.");
+			transaction.begin();
+			user = manager.find(Users.class, userId);
+			System.out.println("in changepwd dao : "+user);
+			user.setUserPassword(password);
+			manager.persist(user);
+			transaction.commit();
+			return true;
+		} catch (RuntimeException e) {
+			LOGGER.info("Error while retriving the user details.");
+			if (transaction.isActive())
+				transaction.rollback();
+			throw new HCSException("Error while retreiving user");
+		} finally {
+			manager.close();
+		}
 	}
 
 }

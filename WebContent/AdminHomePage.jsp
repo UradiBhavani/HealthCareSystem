@@ -18,14 +18,14 @@
 		<nav>
 		<ul>
 			<li><a href="CreateCenter.jsp">Create Center</a></li>
-			<li><a href="DeleteCenterServlet">Remove Center</a></li>
+			<li><a href="ViewAllCenters.jsp">View Centers</a></li>
 			<li><a href="LogoutServlet">Logout</a></li>
 		</ul>
 		</nav>
 	</div>
 	</header>
 	<footer>
-	<p>sfzsgfhtgffffffffff</p>
+	<p>@Health Care System, 2020, Developed by Group 4</p>
 	</footer>
 	<!--<h1>Admin HomePage</h1>
 	 <form action="CreateCenterServlet" method="post">

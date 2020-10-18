@@ -42,11 +42,11 @@ public class Test
 	@Column(name = "testId")
 	private String testId;
 	private String testName;
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "centerId", referencedColumnName="center_id")
 	private DiagnosticCenter center;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "test",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Appointment> listOfAppointments = new ArrayList<Appointment>();
 	
 	public Test() {

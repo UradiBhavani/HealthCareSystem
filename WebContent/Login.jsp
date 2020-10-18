@@ -9,7 +9,7 @@
 			response.sendRedirect("UserHomePage.jsp");
 		} else {
 			response.sendRedirect("AdminHomePage.jsp");
-		} 
+		}
 	}
 %>
 
@@ -27,9 +27,12 @@
 	<header id="header">
 		<div class="container">
 			<div id="branding">
-
-				<h1 class="logo">HCS</h1>
-
+				<!--<h1><span class = "highlight">ONE</span> STOP DOCS</h1>-->
+				<!-- <h1 class="logo">HCS</h1> -->
+				<!--<img src="logo-1.png" class="img" alt="logo">-->
+				<div class="logo-image">
+					<img src="images/logo.png" style="width:30%;height:90%;"></img>
+					</div>
 			</div>
 			<nav>
 				<ul>
@@ -39,7 +42,11 @@
 		</div>
 	</header>
 
+	<div class="image">
+		<img src="images/login-registration.jpg"
+			style="width: 100%; height: 82%;position:absolute"></img>
 
+	</div>
 	<div class="box">
 		<h1>Login</h1>
 		<form action="LoginServlet" method="post">
@@ -63,7 +70,7 @@
 	</div>
 
 	<footer>
-		<p>sfzsgfhtgffffffffff</p>
+		<p>@Health Care System, 2020, Developed by Group 4</p>
 	</footer>
 </body>
 </html>

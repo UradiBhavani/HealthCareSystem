@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h1>Booked Appointment successfully</h1>
-	<a href="UserHomePage.jsp">Back</a>
+	<META http-equiv="refresh" content="10;URL=UserHomePage.jsp">
+	
 </body>
 </html>

@@ -266,19 +266,31 @@ public class UserServiceImpl implements IUserService{
 		
 		return null;
 	}
-	
-	/***********************************
-	 * 
-	 * @Description : Method to retrieve the applicationId using userId
-	 * @Author : Reshma
-	 * @arg1 : String
-	 * 
-	 * @returns: String
-	 * @Exception : HCSException
-	 * 
-	 ***********************************/
+
+
 	@Override
-	public String getApplicationId(String userId) {
-		return userDaoInterface.getApplicationId(userId);
+	public List<DiagnosticCenter> getDiagnosticCentersListByLocation(String location) {
+		try
+		{
+			return userDaoInterface.getDiagnosticCentersListByLocation(location);
+		} 
+		catch (HCSException e) 
+		{	
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean editProfile(Users user) {
+		try 
+		{
+			return userDaoInterface.editProfile(user);
+		}
+		catch (HCSException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return false;
 	}
 }

@@ -20,14 +20,16 @@ public interface IAdminService
 
 	public boolean deleteCenter(DiagnosticCenter center);
 	
+	public List<Test> viewAllTest(String centerId);
+
+	public boolean removeTest(String testId);
+
 	
 
-	public boolean removeTest(Test test);
+	List<Appointment> viewAllAppointmentsByCenter(String centerId);
 
-	public boolean approveAppointment(Appointment appointment,char appStatus);
+	public boolean approveRejectAppointment(int appId, char appStatus);
 
-
-	List<Appointment> viewAllPendingAppointmentByCenter(DiagnosticCenter center);
 
 	
 }

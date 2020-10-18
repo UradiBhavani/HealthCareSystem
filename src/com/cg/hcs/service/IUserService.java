@@ -23,7 +23,7 @@ public interface IUserService {
 
 	public List<DiagnosticCenter> getDiagnosticCentersList();
 	
-	List<Test> getTestsList(String centerId);
+	public List<Test> getTestsList(String centerId);
 	
 	public Users getUser(String userId);
 	 
@@ -34,7 +34,9 @@ public interface IUserService {
 	public List<Appointment> getAppointmentStatus(Users user);
 
 	public List<String> getTestList();
+	
+	public List<DiagnosticCenter> getDiagnosticCentersListByLocation(String location);
 
-	public String getApplicationId(String userId);
+	public boolean editProfile(Users user);
 	
 }

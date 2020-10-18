@@ -12,16 +12,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Make Appointment</title>
 <link rel="stylesheet" type="text/css" href="LoginRegister.css">
+<link rel="stylesheet" type " text/css" href="css/makeAppointment.css">
 </head>
 
 <body>
 	<header id="header">
 	<div class="container">
 		<div id="branding">
-
-			<h1 class="logo">HCS</h1>
-
-		</div>
+				<!--<h1><span class = "highlight">ONE</span> STOP DOCS</h1>-->
+				<!-- <h1 class="logo">HCS</h1> -->
+				<!--<img src="logo-1.png" class="img" alt="logo">-->
+				<div class="logo-image">
+					<img src="images/logo.png" style="width:30%;height:90%;"></img>
+					</div>
+			</div>
 		<nav>
 		<ul>
 			<li class="current"><a href="UserHomePage.jsp">Home</a></li>
@@ -36,7 +40,7 @@
 		List<Test> testList = userService.getTestsList(id);
 		System.out.println("In Makeappointment.jsp\n" + id + " " + request.getParameter("centerName"));
 	%>
-	<div class="box1">
+	<div class="box">
 		<form action="MakeAppointmentServlet" method="post">
 			<%
 				session.setAttribute("centerId", id);
@@ -68,15 +72,16 @@
 				</tr>
 				<tr>
 					<td>Time</td>
-					<td><input type="time" id="appt" name="appt"></td>
+					<td><input type="time" id="time" name="time"></td>
 				</tr>
 
 			</table>
 			<input type="submit" name="Book Appointment">
 		</form>
 	</div>
+
 	<footer>
-	<p>sfzsgfhtgffffffffff</p>
+	<p>@Health Care System, 2020, Developed by Group 4</p>
 	</footer>
 </body>
 </html>
